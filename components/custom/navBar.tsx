@@ -2,49 +2,35 @@
 
 import React from "react";
 import {ButtonGroup} from "@/components/ui/button-group";
-import {Button} from "@/components/ui/button";
-import {useRouter} from "next/navigation";
+import {NavButton} from "@/components/custom/navButton";
 import Image from "next/image";
+import {useRouter} from "next/navigation";
 
 function NavBar() {
     const router = useRouter();
 
     return (
-        <div className={"m-4 flex items-center"}>
+        <div className={"flex items-center bg-nav-blue"}>
             <div>
                 <Image
-                    className=""
-                    src="/tui.jpg"
-                    alt="Tui bird in tree at zealandia"
-                    width={150}
-                    height={100}
+                    src="/KMTKDashboardLogo.jpg"
+                    alt="Dashboard Logo"
                     priority
                     onClick={() => router.push("/")}
+                    width={400}
+                    height={400}
                 />
-                <p>Temporary Home Button</p>
             </div>
             <div className={"absolute right-0 p-4 flex items-center"}>
                 <ButtonGroup>
                     <ButtonGroup>
-                        <Button variant={"outline"}
-                                size={"lg"}
-                                onClick={() => router.push("/KMTK")}>
-                            Sanctuary To Sea
-                        </Button>
+                        <NavButton route={"/KMTK"} text={"Sanctuary to sea"}></NavButton>
                     </ButtonGroup>
                     <ButtonGroup>
-                        <Button variant={"outline"}
-                                size={"lg"}
-                                onClick={() => router.push("/map")}>
-                            Dynamic Map
-                        </Button>
+                        <NavButton route={"/map"} text={"Map"}></NavButton>
                     </ButtonGroup>
                     <ButtonGroup>
-                        <Button variant={"outline"}
-                                size={"lg"}
-                                onClick={() => router.push("/resources")}>
-                            Resources
-                        </Button>
+                        <NavButton route={"/resources"} text={"Resources"}></NavButton>
                     </ButtonGroup>
                 </ButtonGroup>
             </div>
