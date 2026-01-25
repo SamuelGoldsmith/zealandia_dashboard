@@ -17,16 +17,18 @@ VariantProps<typeof buttonVariants> & {
     const router = useRouter();
 
     return (
-        <ButtonGroup>
-            <Button
-                {...props}
-                variant={"link"}
-                size={"lg"}
-                style={{fill: "#f26422"}}
-                onClick={() => router.push(route? route : "/")}>
-                {text}
-            </Button>
-        </ButtonGroup>
+        <div className={"border-l border-white my-auto w-full place-items-center"}>
+            <ButtonGroup>
+                <Button
+                    {...props}
+                    variant={"link"}
+                    size={"lg"}
+                    className={"text-zealandia-orange m-auto"}
+                    onClick={() => router.push(route? route : "/")}>
+                    {text}
+                </Button>
+            </ButtonGroup>
+        </div>
     );
 }
 
