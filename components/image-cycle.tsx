@@ -11,7 +11,7 @@ function ImageCycle({
     header_url,
     className,
   ...props
-}:{ pairs: Array<{ image: string; text: string }>, header?: string, header_url?: string } & React.HTMLAttributes<HTMLDivElement>) {
+}:{ pairs: Array<{ image: string; text: string }>, header?: string, header_url?: string } & React.HTMLAttributes<HTMLAnchorElement>) {
   return (
     <a href={header_url} target="_blank" className={cn(`w-full text-center h-auto p-3`, className)} {...props} >
       {header && <div className="h-1/10 bg-roto-blue text-center"><h2 className="align-middle text-xl font-bold text-white">{header}</h2></div>}
