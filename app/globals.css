@@ -29,6 +29,8 @@
   --color-zealandia-orange: var(--zealandia-orange);
   --color-nav-blue: var(--nav-blue);
   --color-roto-blue: var(--roto-blue);
+  --color-timeline-line: var(--timeline-line);
+  --color-timeline-icon: var(--timeline-icon);
 }
 
 :root {
@@ -41,6 +43,8 @@
   --zealandia-orange: #f26422;
   --nav-blue: #07454B;
   --roto-blue: #046aa4;
+  --timeline-line: #046aa4;
+  --timeline-icon: #f26422;
 }
 
 

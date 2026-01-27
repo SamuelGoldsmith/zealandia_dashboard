@@ -33,7 +33,7 @@ function NavBar() {
             <div className={"flex items-center justify-between w-full"}>
                 <NavButton route={"/map"} text={"Catchment Map and Data"}></NavButton>
                 <NavButton route={"/KMTK"} text={"Region History"}></NavButton>
-                <NavButton route={"/about"} text={"Our Mission"}></NavButton>
+                <NavButton route={"/home"} text={"Our Mission"}></NavButton>
                 <NavButton route={"/resources"} text={"Get Involved"}></NavButton>
             </div>
         </div>
