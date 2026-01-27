@@ -7,7 +7,7 @@ import { Carousel, CarouselContent, CarouselItem } from "./ui/carousel";
 
 function ImageCycle({
     pairs,
-    header,
+    header, 
     className,
   ...props
 }:{ pairs: Array<{ image: string; text: string, link: string }>, header?: string} & React.HTMLAttributes<HTMLDivElement>) {
