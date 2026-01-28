@@ -100,7 +100,10 @@ function Carousel({
     if (!api || !autoplayInterval || autoplayInterval <= 0) return
 
     const id = setInterval(() => {
-      api?.scrollNext()
+      // if mouse is not hovering, scroll next
+      if (!document.querySelector('[data-slot="carousel"]:hover')) {
+        api?.scrollNext()
+      }
     }, autoplayInterval)
 
     return () => clearInterval(id)
