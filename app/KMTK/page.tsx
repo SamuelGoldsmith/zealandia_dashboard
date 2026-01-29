@@ -30,7 +30,6 @@ interface TimelineElement {
 
 export default function KMTK() {
 
-    const [selectedID, setSelectedID] = useState('0');
     const [api, setApi] = useState<CarouselApi>()
 
     const timelineItems: TimelineElement[] = [];
@@ -48,11 +47,20 @@ export default function KMTK() {
         });
     });
 
+    timelineItems.sort((a, b) => parseInt(a.date) - parseInt(b.date));
+    timelineItems.reverse()
+
+    timelineItems.forEach((item, index) => {
+        item.id = index.toString();
+    })
+
+    const [selectedID, setSelectedID] = useState(id.toString());
+
     useEffect(() => {
         if (!api) {
             return
         }
-
+        console.log(selectedID);
         api.scrollTo(parseInt(selectedID))
 
     }, [api, selectedID])
@@ -81,10 +89,9 @@ export default function KMTK() {
                 <div className="w-full h-[50vh] place-items-center">
                     <Carousel className="w-3/4 h-[50vh] flex flex-col" setApi={setApi}
                               orientation={'vertical'}
-                              dir={'rtl'}
                               opts={{watchDrag: false}}
                     >
-                        <CarouselPrevious
+                        <CarouselNext
                             className="self-center my-2"
                             onClick={() => {
                                 setSelectedID((parseInt(selectedID) + 1).toString());
@@ -105,7 +112,7 @@ export default function KMTK() {
                                 </CarouselItem>
                             ))}
                         </CarouselContent>
-                        <CarouselNext
+                        <CarouselPrevious
                             className="self-center my-2"
                             onClick={() => {
                                 setSelectedID((parseInt(selectedID) - 1).toString())

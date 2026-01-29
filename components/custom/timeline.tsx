@@ -189,7 +189,7 @@ const TimelineItem = React.forwardRef<HTMLLIElement, TimelineItemProps>(
                                 transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                                 style={{ overflow: 'hidden' }}
                             >
-                                <TimelineDescription className="mt-2">
+                                <TimelineDescription className="mb-6">
                                     {description}
                                 </TimelineDescription>
                             </motion.div>
