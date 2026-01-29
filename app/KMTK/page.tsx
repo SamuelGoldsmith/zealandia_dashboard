@@ -60,7 +60,7 @@ export default function KMTK() {
         if (!api) {
             return
         }
-        console.log(selectedID);
+
         api.scrollTo(parseInt(selectedID))
 
     }, [api, selectedID])
@@ -122,7 +122,7 @@ export default function KMTK() {
                     </Carousel>
                 </div>
                 <div className={"w-full h-[50vh] bg-white place-items-center"}>
-                    <p>Map Here</p>
+                    <p>Map Here when GIS works</p>
                 </div>
             </div>
         </div>

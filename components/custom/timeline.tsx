@@ -383,7 +383,7 @@ const TimelineDescription = React.forwardRef<
     HTMLParagraphElement,
     React.HTMLAttributes<HTMLParagraphElement>
 >(({ className, ...props }, ref) => (
-    <p ref={ref} className={cn('max-w-2xl text-lg text-muted-foreground', className)} {...props} />
+    <p ref={ref} className={cn('text-lg text-muted-foreground', className)} {...props} />
 ));
 TimelineDescription.displayName = 'TimelineDescription';
 
