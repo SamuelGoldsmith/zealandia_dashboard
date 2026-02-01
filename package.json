@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@arcgis/core": "^4.34.8",
+    "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-hover-card": "^1.1.15",
     "@radix-ui/react-menubar": "^1.1.16",
     "@radix-ui/react-scroll-area": "^1.2.10",
@@ -25,7 +26,8 @@
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-resizable-panels": "^1.0.10",
-    "tailwind-merge": "^3.4.0"
+    "tailwind-merge": "^3.4.0",
+    "vaul": "^1.1.2"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
