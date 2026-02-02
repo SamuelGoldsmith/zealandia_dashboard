@@ -7,8 +7,8 @@ const imagePairs = [
   { image: '/tui.jpg', text: 'Tūī', link: 'https://www.visitzealandia.com/learn/nature-and-wildlife/birds/tūī/', audio: '/audio/tui.mp3' },
   { image: '/kaka.avif', text: 'Kākā', link: 'https://www.visitzealandia.com/learn/nature-and-wildlife/birds/north-island-kākā/', audio: '/audio/kaka.mp3' },
   { image: '/karearea.avif', text: 'Kārearea', link: 'https://www.visitzealandia.com/learn/nature-and-wildlife/birds/new-zealand-falcon/', audio: '/audio/karearea.mp3' },
-  { image: '/takahe.avif', text: 'Takahē', link: 'https://www.visitzealandia.com/learn/nature-and-wildlife/birds/takahē/', audio: '/audio/takahe.mp3' },
-  { image: '/kiwi.avif', text: 'Kiwi pukupuku', link: 'https://www.visitzealandia.com/learn/nature-and-wildlife/birds/little-spotted-kiwi/', audio: '/audio/kiwi.mp3' },
+  // { image: '/takahe.avif', text: 'Takahē', link: 'https://www.visitzealandia.com/learn/nature-and-wildlife/birds/takahē/', audio: '/audio/takahe.mp3' },
+  // { image: '/kiwi.avif', text: 'Kiwi pukupuku', link: 'https://www.visitzealandia.com/learn/nature-and-wildlife/birds/little-spotted-kiwi/', audio: '/audio/kiwi.mp3' },
   { image: '/kakariki.avif', text: 'Kākāriki', link: 'https://www.visitzealandia.com/learn/nature-and-wildlife/birds/kākāriki/', audio: '/audio/kakariki.mp3' },
 ]
 export default function Home() {
