@@ -32,6 +32,7 @@
   --color-timeline-line: var(--timeline-line);
   --color-timeline-icon: var(--timeline-icon);
   --color-kawakawa-green: var(--kawakawa-green);
+  --color-kowahi-gold: var(--kowahi-gold);
 }
 
 :root {
@@ -47,6 +48,7 @@
   --timeline-line: #046aa4;
   --timeline-icon: #f26422;
   --kawakawa-green: #4b6f45;
+  --kowahi-gold: rgb(238, 180, 29);
 }
 
 
