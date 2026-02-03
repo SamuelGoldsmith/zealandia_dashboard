@@ -35,7 +35,7 @@ function ImageCycle({
 }:{ pairs: Array<{ image: string; text: string, link: string, audio: string }>, header?: string} & React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div className={cn(`w-full text-center h-auto p-3`, className)} {...props}>
-      {header && <div className="h-1/10 bg-sea-blue text-center"><h2 className="align-middle text-xl font-bold text-white">{header}</h2></div>}
+      {header && <div className="h-1/10 bg-sea-blue text-center"><h2 className="align-middle text-xl font-bold text-primary">{header}</h2></div>}
       <Carousel opts={{ loop: true }} autoplayInterval={3000}>
         <CarouselContent>
         {pairs.map((pair, index) => (
@@ -44,7 +44,7 @@ function ImageCycle({
             <div className="bg-cover bg-center h-64" style={{ backgroundImage: `url(${pair.image})` }}>
               <div className="h-8/10"/>
                 <div className={`w-full bg-primary-tp text-center p-3 h-2/10`}>
-                  <span className="text-m text-goldenrod font-bold vertical-align-bottom">{pair.text}</span>
+                  <span className="text-m text-deep-brown font-bold vertical-align-bottom">{pair.text}</span>
                 </div>
             </div> </a>
             </CarouselItem>
