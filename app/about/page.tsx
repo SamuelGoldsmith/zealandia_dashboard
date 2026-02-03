@@ -9,7 +9,7 @@ export default function Partners() {
             link: 'https://www.visitzealandia.com/'
         },
         {
-            img: '/partners/TaranakiWhanui.jpg',
+            img: '/partners/TaranakiWhanui.png',
             link: 'https://www.pnbst.maori.nz/welcome-to-taranaki-whanui-ki-te-upoko-o-te-ika-port-nicholson-block-settlement-trust/'
         },
         {
@@ -25,15 +25,15 @@ export default function Partners() {
             link: 'https://www.wgtn.ac.nz/'
         },
         {
-            img: '/partners/CentrePort.png',
+            img: '/partners/CentrePort.svg',
             link: 'https://www.centreport.co.nz/'
         },
         {
-            img: '/partners/MORPHUM.jpg',
+            img: '/partners/MORPHUM.png',
             link: 'https://www.morphum.com/'
         },
         {
-            img: '/partners/GHD.jpg',
+            img: '/partners/GHD.png',
             link: 'https://www.ghd.com/en-nz'
         },
 
