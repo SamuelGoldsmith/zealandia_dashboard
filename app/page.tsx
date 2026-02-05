@@ -14,8 +14,8 @@ const imagePairs = [
 export default function Home() {
   return (
     <div className="overflow-hidden h-full">
-      <main className="w-full flex h-full bg-center " style={{ backgroundImage: "url('/stream.avif')", backgroundSize: '100% 100%' }}>
-        <div className="w-1/3">
+      <main className="w-full lg:flex md:flex h-full bg-center bg-cover" style={{ backgroundImage: "url('/stream.avif')", backgroundSize: '100% 100%' }}>
+        <div className="lg:w-1/3 md:w-1/3 sm:w-full">
           <TextBox text="The Kia Mouriora Te Kaiwharawhara dashboard is designed to display ecological data about Te Kaiwharawhara. Navigate through information using the navigation bar and learn about the history, health, and conservation efforts of the region."/>
           <ImageCycle pairs={imagePairs} header="Birds in the Catchment"></ImageCycle>
         </div>
