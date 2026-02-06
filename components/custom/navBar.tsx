@@ -27,7 +27,7 @@ function NavBar() {
                     <div className={` w-full md:flex ${isOpen ? "flex flex-wrap w-full" : "hidden"}`}>
                     <NavButton route={"/map"} text={"Catchment Map and Data"}></NavButton>
                     <NavButton route={"/history"} text={"Region History"}></NavButton>
-                    <NavButton route={"/contribute"} text={"Get Involved"}></NavButton>
+                    <NavButton route={"/get-involved"} text={"Get Involved"}></NavButton>
                     <NavButton route={"/about"} text={"About"}></NavButton>
                     </div>
                     <div className="md:hidden ml-auto m-3">
