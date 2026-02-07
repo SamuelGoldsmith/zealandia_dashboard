@@ -123,7 +123,7 @@ export default function Partners() {
                     alt="sea icon"
                     width={150}
                     height={150}
-                    className="m-3"
+                    className="m-3 md:w-1/9 md:h-1/9  sm:w-5 sm:h-5"
                 />
                 <div>
                     <h1 className="text-3xl text-vivid-azure m-3">Te Awa - The Stream</h1>
@@ -140,7 +140,7 @@ export default function Partners() {
                     alt="forest icon"
                     width={150}
                     height={150}
-                    className="m-3"
+                    className="m-3 md:w-1/9 md:h-1/9  sm:w-5 sm:h-5"
                 />
                 <div>
                     <h1 className="text-3xl text-forest-green m-3">Te Ngahere - The Forest</h1>
@@ -157,7 +157,7 @@ export default function Partners() {
                     alt="people icon"
                     width={150}
                     height={150}
-                    className="m-3"
+                    className="m-3 md:w-1/9 md:h-1/9  sm:w-5 sm:h-5"
                 />
                 <div>
                     <h1 className="text-3xl text-vivid-orange m-3">Te Ngātahi - The People</h1>
@@ -170,7 +170,7 @@ export default function Partners() {
             </div>
             <p className="text-left text-deep-brown text-xl m-3 pb-3">
                 Want to learn more about Kia Mouriora Te Kaiwharawhara? 
-                Read about the strategy <a className="text-nav-blue hover:underline">here</a>.
+                Read about the strategy <a href="https://www.visitzealandia.com/about/our-work/sanctuary-to-sea/" target="_blank" className="text-nav-blue hover:underline">here</a>.
             </p>
             <TextBox
                 secondaryText={"Kia Mouriora Te Kaiwharwhwara Strategy Group"}
