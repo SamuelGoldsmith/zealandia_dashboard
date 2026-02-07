@@ -29,5 +29,5 @@ export default function ArcGISMap({ id, onLayersLoaded }: { id: string; onLayers
     return () => view.destroy();
   }, [id, onLayersLoaded]);
 
-  return <div ref={mapRef} className="w-full h-150" />;
+  return <div ref={mapRef} className="w-full max-w-full h-150 " />;
 }
