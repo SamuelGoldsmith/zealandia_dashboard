@@ -1,3 +1,4 @@
+import { HoverTranslation } from "@/components/hover-translation";
 import { ImageCycle } from "@/components/image-cycle";
 import { TextBox } from "@/components/text-box";
 import { link } from "fs";
@@ -14,13 +15,35 @@ const imagePairs = [
 export default function Home() {
   return (
     <div className="overflow-hidden h-full">
-      <main className="w-full flex h-full bg-center " style={{ backgroundImage: "url('/stream.avif')", backgroundSize: '100% 100%' }}>
-        <div className="w-1/3">
-          <TextBox text="The Kia Mouriora Te Kaiwharawhara dashboard is designed to display ecological data about Te Kaiwharawhara. Navigate through information using the navigation bar and learn about the history, health, and conservation efforts of the region."/>
+      <main className="w-full flex-nowrap lg:flex md:flex h-full bg-center bg-cover" style={{ backgroundImage: "url('/stream.avif')", backgroundSize: '100% 100%' }}>
+        <div className="lg:w-1/3 md:w-1/3 sm:w-full">
+          <TextBox>
+              The Kia Mouriora Te Kaiwharawhara dashboard is designed to display 
+              data and information about Te Kaiwharawhara, data is sourced from
+              various databases of publicly reported data. Navigate through information 
+              using the navigation bar and learn about the history, health, and conservation
+              efforts of the <HoverTranslation text="whaitua"/>. This dashboard was created by a group of university 
+              students from Worcester Polytechnic Institute.
+          </TextBox>
           <ImageCycle pairs={imagePairs} header="Birds in the Catchment"></ImageCycle>
         </div>
-        <div className="w-2/3">
+        <div className="lg:w-1/3 md:w-1/3 sm:w-full">
 
+        </div>
+        <div className="lg:w-1/3 md:w-1/3 sm:w-full">
+          <TextBox type="browns" secondaryText="What is a catchment?" className="w-full">
+              <p>A whaitua or catchment describes a geographical area 
+                where water collects, bounded by mountains or positioned 
+                in a valley. Whaitua provide biodiverse ecosystems for 
+                species to thrive.
+                <br/><br/>
+                Te Kaiwharawhara whaitua is the largest in Wellington City 
+                and the only one with a semi-natural estuary connected to 
+                Wellington Harbour. It's an important place for Taranaki Whānui 
+                ki Te Upoko o Te Ika, who are <HoverTranslation text="mana whenua"/>. Taranaki Whānui has 
+                a strong cultural and historical connection to Te Kaiwharawhara.
+              </p>
+          </TextBox>
         </div>
       </main>
     </div>

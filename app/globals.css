@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap');
 @import "tailwindcss";
+@import "tw-animate-css";
 
+@custom-variant dark (&:is(.dark *));
 
 @font-face {
   font-family: 'Knockout';
@@ -25,14 +27,17 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-
+  --color-forest-green: var(--forest-green);
   --color-goldenrod: var(--goldenrod);
   --color-nav-blue: var(--nav-blue);
+  --color-peanut-butter: var(--peanut-butter);
   --color-sea-blue: var(--sea-blue);
   --color-timeline-line: var(--timeline-line);
   --color-timeline-icon: var(--timeline-icon);
   --color-deep-brown: var(--deep-brown);
   --color-kowahi-gold: var(--kowahi-gold);
+  --color-vivid-orange: var(--vivid-orange);
+  --color-vivid-azure: var(--vivid-azure);
 }
 
 :root {
@@ -48,10 +53,12 @@
   --timeline-line: #4F2803;
   --timeline-icon: #feb41d;
   --deep-brown: #4F2803;
+  --peanut-butter: #a46f3d;
   --kowahi-gold: rgb(238, 180, 29);
+  --forest-green: #4b6f64;
+  --vivid-orange: #f26422;
+  --vivid-azure: #046aa4;
 }
-
-
 
 @layer base {
   body {
@@ -67,3 +74,24 @@
     @apply font-serif;
   }
 }
+
+.dark {
+  --sidebar: hsl(240 5.9% 10%);
+  --sidebar-foreground: hsl(240 4.8% 95.9%);
+  --sidebar-primary: hsl(224.3 76.3% 48%);
+  --sidebar-primary-foreground: hsl(0 0% 100%);
+  --sidebar-accent: hsl(240 3.7% 15.9%);
+  --sidebar-accent-foreground: hsl(240 4.8% 95.9%);
+  --sidebar-border: hsl(240 3.7% 15.9%);
+  --sidebar-ring: hsl(217.2 91.2% 59.8%);
+
+}
+
+/* @layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+} */

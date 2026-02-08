@@ -1,7 +1,7 @@
 import ArcGISMap from "@/components/map";
 import MapPanel from "@/components/map-panel";
 import { TextBox } from "@/components/text-box";
-import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
+
 
 function toggleLayer(layer: __esri.Layer) {
   layer.visible = !layer.visible;

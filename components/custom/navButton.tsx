@@ -17,8 +17,8 @@ VariantProps<typeof buttonVariants> & {
     const router = useRouter();
 
     return (
-        <div className={"border-l border-white my-auto w-full place-items-center"}>
-            <ButtonGroup>
+        <div className={"border-l border-white px-auto my-auto w-full place-items-center"}>
+            <ButtonGroup className="flex">
                 <Button
                     {...props}
                     variant={"link"}
