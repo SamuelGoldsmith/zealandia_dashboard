@@ -204,7 +204,7 @@ function CarouselPrevious({
       className={cn(
         "static size-8 rounded-full m-1",
         orientation === "horizontal"
-          ? "top-1/2 -left-12 -translate-y-1/2"
+          ? "top-1/2 -left-12"
           : "-top-12 left-1/2 -translate-x-1/2 rotate-90",
         className
       )}
@@ -212,7 +212,7 @@ function CarouselPrevious({
       onClick={scrollPrev}
       {...props}
     >
-      <ArrowRight />
+      <ArrowLeft />
       <span className="sr-only">Previous slide</span>
     </Button>
   )
@@ -234,7 +234,7 @@ function CarouselNext({
       className={cn(
         "static size-8 rounded-full m-1",
         orientation === "horizontal"
-          ? "top-1/2 -right-12 -translate-y-1/2"
+          ? "top-1/2 -right-12"
           : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
         className
       )}
@@ -242,7 +242,7 @@ function CarouselNext({
       onClick={scrollNext}
       {...props}
     >
-      <ArrowLeft />
+      <ArrowRight />
       <span className="sr-only">Next slide</span>
     </Button>
   )
