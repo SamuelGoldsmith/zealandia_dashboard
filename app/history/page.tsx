@@ -129,7 +129,7 @@ export default function KMTK() {
                             <Button variant="default" className={"self-center p-3 w-1/10 text-m"}>Filter</Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className={"bg-primary"}>
-                            <Checkbox checked={historical} onCheckedChange={setHistorical}/>
+                            <Checkbox checked={historical} onCheckedChange={(historical) => setHistorical(historical as boolean)}/>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
