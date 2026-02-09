@@ -6,6 +6,16 @@ import * as React from 'react';
 import { cn } from '@/lib/utils';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { motion, HTMLMotionProps, AnimatePresence } from 'framer-motion';
+import {
+    Carousel,
+    type CarouselApi,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious
+} from "@/components/ui/carousel";
+import Image from "next/image";
+import {useEffect, useState} from "react";
 
 type TimelineColor = 'primary' | 'secondary' | 'muted' | 'accent' | 'destructive';
 
@@ -108,6 +118,7 @@ interface TimelineItemProps extends Omit<HTMLMotionProps<'li'>, 'ref'> {
     loading?: boolean;
     /** Error message */
     error?: string;
+    images?: string[];
 }
 
 const TimelineItem = React.forwardRef<HTMLLIElement, TimelineItemProps>(
@@ -135,6 +146,7 @@ const TimelineItem = React.forwardRef<HTMLLIElement, TimelineItemProps>(
             animate,
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             transition,
+            images,
             ...props
         },
         ref,
@@ -145,6 +157,27 @@ const TimelineItem = React.forwardRef<HTMLLIElement, TimelineItemProps>(
         );
 
         const selected = (selectedID === id);
+
+        const [api, setApi] = useState<CarouselApi>()
+
+        // For showing current image number
+        const [current, setCurrent] = useState(0)
+        const [count, setCount] = useState(0)
+
+        useEffect(() => {
+            if (!api) {
+                return
+            }
+
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setCount(api.scrollSnapList().length);
+            setCurrent(api.selectedScrollSnap() + 1);
+
+            api.on("select", () => {
+                setCurrent(api.selectedScrollSnap() + 1)
+            })
+
+        }, [api])
 
         const content = (
             <div
@@ -166,7 +199,7 @@ const TimelineItem = React.forwardRef<HTMLLIElement, TimelineItemProps>(
                         <motion.div
                             layout
                             initial={false}
-                            animate={{ height: selected ? '10rem' : '2rem' }}
+                            animate={{ height: selected ? '70vh' : '2rem' }}
                             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                             className="w-0.5 bg-timeline-line mt-1 self-center"
                             style={{ height: selected ? '4rem' : '2rem' }}
@@ -188,10 +221,42 @@ const TimelineItem = React.forwardRef<HTMLLIElement, TimelineItemProps>(
                                 exit={{ height: 0, opacity: 0 }}
                                 transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                                 style={{ overflow: 'hidden' }}
+                                className={"mr-3"}
                             >
                                 <TimelineDescription className="mb-6">
                                     {description}
                                 </TimelineDescription>
+
+                                <Carousel className="w-full h-full flex flex-col items-stretch" setApi={setApi}
+                                          opts={{watchDrag: false}}
+                                >
+                                    <CarouselContent className={'h-[50vh] w-full flex items-stretch'}>
+                                        {images && images.map((img, index) => (
+                                            <CarouselItem key={index} className="h-full w-full flex items-stretch">
+                                                <div className="relative w-full h-full">
+                                                    <Image
+                                                        src={img}
+                                                        alt={""}
+                                                        fill
+                                                        className="object-cover"
+                                                    />
+                                                </div>
+                                            </CarouselItem>
+                                        ))}
+                                    </CarouselContent>
+                                    <div className={"flex flex-row items-center self-center py-3 gap-3"}>
+                                        <CarouselPrevious
+                                            className="self-center"
+                                        />
+                                        <div className="text-muted-foreground py-2 text-center text-sm">
+                                            Image {current} of {count}
+                                        </div>
+                                        <CarouselNext
+                                            className="self-center"
+                                        />
+                                    </div>
+                                </Carousel>
+
                             </motion.div>
                         )}
                     </AnimatePresence>

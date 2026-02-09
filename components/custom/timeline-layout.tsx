@@ -22,6 +22,7 @@ interface TimelineElement {
     size?: TimelineSize;
     loading?: boolean;
     error?: string;
+    images?: string[];
 }
 
 interface TimelineLayoutProps {
@@ -45,7 +46,7 @@ export const TimelineLayout = ({
                                    connectorColor,
                                    className,
                                    selectedID,
-                                   setSelectedID
+                                   setSelectedID,
                                }: TimelineLayoutProps) => {
 
     return (
@@ -73,6 +74,7 @@ export const TimelineLayout = ({
                         iconColor={item.color || iconColor}
                         connectorColor={item.color || connectorColor}
                         showConnector={index !== items.length - 1}
+                        images={item.images}
                     />
                 </motion.div>
             ))}

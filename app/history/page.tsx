@@ -1,20 +1,11 @@
 'use client';
 
 import {TimelineColor, TimelineLayout, TimelineSize, TimelineStatus} from "@/components/custom/timeline-layout";
-import {historicalData} from "@/lib/historicalData";
 import {ReactNode, useState, useEffect} from "react";
 import {ScrollArea} from "@/components/ui/scroll-area"
-import Image from "next/image";
-import {
-    Carousel,
-    CarouselContent,
-    CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
-    type CarouselApi,
-} from "@/components/ui/carousel"
 import Layer from "@arcgis/core/layers/Layer";
 import dynamic from "next/dynamic";
+import Papa, { ParseResult } from 'papaparse';
 
 const ArcGISMap = dynamic(() => import("../../components/map"), { ssr: false });
 
@@ -32,28 +23,66 @@ interface TimelineElement {
     images: string[];
 }
 
+interface CsvDataRow {
+    Year: string;
+    DisplayTitle: string;
+    PhotoTitle: string;
+    description: string;
+    photoLink: string;
+    source: string;
+}
+
 export default function KMTK() {
-
-    const [api, setApi] = useState<CarouselApi>()
-
-    // For showing current image number
-    const [current, setCurrent] = useState(0)
-    const [count, setCount] = useState(0)
 
     const [layers, setLayers] = useState<Layer[]>([]);
 
-    const timelineItems: TimelineElement[] = [];
+    const [timelineItems, setTimeLineItems] = useState<TimelineElement[]>([]);
+
     let id = 0;
 
-    historicalData.timeline.forEach((item) => {
-        timelineItems.push({
-            id: String(id++),
-            date: String(item.date),
-            title: item.title,
-            description: item.description,
-            images: item.images
-        });
-    });
+    useEffect(() => {
+
+        async function loadCSV() {
+            const res = await fetch("/timelineData.csv")
+            if (!res.ok) throw new Error(`Failed to fetch CSV: ${res.statusText}`);
+            const csv: string = await res.text();
+
+            const results: ParseResult<CsvDataRow> = Papa.parse<CsvDataRow>(csv, {
+                header: true,
+                skipEmptyLines: true,
+            });
+
+            const items: TimelineElement[] = [];
+            let prevItem: TimelineElement;
+
+            results.data.forEach((item: CsvDataRow) => {
+                const images = [];
+
+                if(prevItem && prevItem.title === item.DisplayTitle) {
+                    // if the current item has the same DisplayTitle as the previous item, add its photo
+                    prevItem.images.push(item.photoLink);
+                } else {
+                    images.push(item.photoLink);
+
+                    const newItem: TimelineElement = {
+                        id: String(id++),
+                        date: String(item.Year),
+                        title: item.DisplayTitle,
+                        description: item.description,
+                        images: images,
+                    }
+                    items.push(newItem);
+
+                    prevItem = newItem;
+                }
+            });
+
+            setTimeLineItems(items);
+        }
+
+        loadCSV();
+        })
+
 
     timelineItems.sort((a, b) => parseInt(a.date) - parseInt(b.date));
     timelineItems.reverse()
@@ -63,33 +92,6 @@ export default function KMTK() {
     })
 
     const [selectedID, setSelectedID] = useState((id-1).toString());
-
-    useEffect(() => {
-        if (!api) {
-            return
-        }
-
-        setCount(timelineItems[selectedID].images.length);
-        setCurrent(api.selectedScrollSnap() + 1)
-
-        api.on("select", () => {
-            setCurrent(api.selectedScrollSnap() + 1)
-        })
-
-        api.scrollTo(parseInt(selectedID))
-
-    }, [api, selectedID])
-
-    /* scrolls to selected timeline element
-
-    function ScrollToTimelineElement(): void {
-        const container = document.getElementById('timelineScrollArea');
-        if (!container) return;
-        const target = container.querySelector(`[data-timeline-id="${selectedID}"]`) as HTMLElement | null;
-        if (!target) return;
-        target.scrollIntoView({block: 'center', behavior: 'smooth'});
-    }
-    */
 
     return (
         <div className="flex flex-row w-full h-screen justify-between">
@@ -103,44 +105,14 @@ export default function KMTK() {
                     items={timelineItems}
                 />
             </ScrollArea>
-            <div className={"flex flex-col w-1/2"}>
-                <div className="w-full h-[50vh] place-items-center">
-                    <Carousel className="w-full h-[50vh] flex flex-row" setApi={setApi}
-                              opts={{watchDrag: false}}
-                    >
-                        <CarouselPrevious
-                            className="self-center my-2"
-                        />
-                        <CarouselContent className={'h-full w-[40vw] flex items-stretch'}>
-                            {timelineItems[selectedID].images.map((img, index) => (
-                                <CarouselItem key={index} className="h-full w-full flex items-stretch">
-                                    <div className="relative w-full h-full">
-                                        <Image
-                                            src={img}
-                                            alt={""}
-                                            fill
-                                            className="object-cover"
-                                        />
-                                    </div>
-                                </CarouselItem>
-                            ))}
-                        </CarouselContent>
-                        <CarouselNext
-                            className="self-center my-2"
-                        />
-                    </Carousel>
-                </div>
-                <div className="text-muted-foreground py-2 text-center text-sm">
-                    Slide {current} of {count}
-                </div>
-                <div className={"w-full h-[50vh] bg-white place-items-center"}>
+                <div className={"w-[40vw] h-full] bg-white place-items-center"}>
                     <ArcGISMap
                         id={"bda891e30a384c4f9108fd9fdb6b07e9"}
                         onLayersLoaded={setLayers}
                     />
                 </div>
-            </div>
         </div>
 
     );
 }
+
