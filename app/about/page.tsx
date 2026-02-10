@@ -1,3 +1,4 @@
+import { HoverTranslation } from "@/components/hover-translation";
 import {TextBox} from "@/components/text-box";
 import Image from "next/image";
 
@@ -78,7 +79,7 @@ export default function Partners() {
                 <br/><br/>
                 Together, Kia Mouriora Te Kaiwharawhara works closely with 
                 local businesses, community groups, and other organisations 
-                to restore the mouri of Te Kaiwharawhara whaitua.
+                to restore the <HoverTranslation text="mouri"/> of Te Kaiwharawhara whaitua.
             </TextBox>
             <TextBox
                 text={"The Kia Mouriora Te Kaiwharawhara Sanctuary to Sea Strategy"}
@@ -94,12 +95,12 @@ export default function Partners() {
                 terrestrial ecosystems in Te Kaiwharawhara, by doing so 
                 enhancing Wellington’s natural capital from “Sanctuary to Sea.”
                 <br/><br/>
-                Te Kaiwharawhara whaitua is unique in Wellington City: it is the 
+                Te whaitua o Te Kaiwharawhara is unique in Wellington City: it is the 
                 largest stream system and only catchment with an open estuary on 
                 Te Whanganui-a-Tara, Wellington harbour. It has many special values — a rich 
                 cultural history, many species of native fish, and the unique 
-                Zealandia santuary at the headwaters, providing a source of 
-                dispersal for unique New Zealand wildlife. 
+                Zealandia santuary at one of the main headwaters, providing a source of 
+                dispersal for unique wildlife. 
                 <br/><br/>
                 The goal of the Kia Mouriora Te Kaiwharawhara Sanctuary to Sea initiative is the 100-year 
                 vision: in 100 years, the catchment is a healthy freshwater 

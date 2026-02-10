@@ -37,7 +37,7 @@ export default function Home() {
                 in a valley. Whaitua provide biodiverse ecosystems for 
                 species to thrive.
                 <br/><br/>
-                Te Kaiwharawhara whaitua is the largest in Wellington City 
+                Te whaitua o Te Kaiwharawhara is the largest in Wellington City 
                 and the only one with a semi-natural estuary connected to 
                 Wellington Harbour. It's an important place for Taranaki Whānui 
                 ki Te Upoko o Te Ika, who are <HoverTranslation text="mana whenua"/>. Taranaki Whānui has 

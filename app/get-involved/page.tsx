@@ -17,7 +17,7 @@ export default function getInvolved() {
                 dedicated to restoring the forest and freshwater ecosystems of a 225-hectare valley 
                 and protecting rare native wildlife inside a predator-exclusion fence. They have successfully 
                 reintroduced many native species and helped increase bird biodiversity in and around the city. 
-                Zealandia offers conservation education, visitor experiences, and community programs that connect 
+                Zealandia offers conservation education, visitor experiences, and community programmes that connect 
                 people with Aotearoa’s unique environment. Their long-term vision is to inspire people to live with 
                 nature both locally and beyond. 
                 </TextBox>
