@@ -160,7 +160,7 @@ export default function Partners() {
                     className="m-3 md:w-1/9 md:h-1/9  sm:w-5 sm:h-5"
                 />
                 <div>
-                    <h1 className="text-3xl text-vivid-orange m-3">Te Ngātahi - The People</h1>
+                    <h1 className="text-3xl text-vivid-orange m-3">Ngā Tāngata - The People</h1>
                     <ul className="list-disc text-left text-vivid-orange text-xl m-3 ml-5">
                         <li>Start the community on a path to recognize the catchment as a living entity and encourage active involvement in restoration</li>
                         <li>support mana whenua in reconnecting to Te Kaiwharawhara catchment </li>
