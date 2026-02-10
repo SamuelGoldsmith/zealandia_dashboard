@@ -41,7 +41,7 @@ function TextBox({
         return (
             <div
                 className={cn(`w-fit bg-primary-tp text-left rounded-sm h-auto m-3 p-6 sm:flex-wrap`, className)} {...props}>
-                {secondaryText && <h1 className={cn("text-3xl text-center text-nav-blue font-sans mr-3")}>{secondaryText}</h1>}
+                {secondaryText && <h1 className={cn("text-3xl text-center text-deep-brown font-sans mr-3")}>{secondaryText}</h1>}
                 {text && <span className={cn("text-m text-deep-brown")}>{text}</span>}
                 {children}
             </div>

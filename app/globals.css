@@ -48,7 +48,7 @@
   --primary-tp: rgba(213, 225, 197, 0.85);
   --secondary: #fad4b1;
   --goldenrod: #feb41d;
-  --nav-blue: #03404f;
+  --nav-blue: #02414e;
   --sea-blue: #297b8f;
   --timeline-line: #4F2803;
   --timeline-icon: #feb41d;
@@ -56,8 +56,9 @@
   --peanut-butter: #a46f3d;
   --kowahi-gold: rgb(238, 180, 29);
   --forest-green: #4b6f64;
-  --vivid-orange: #f26422;
+  --vivid-orange: #f26725;
   --vivid-azure: #046aa4;
+  --takahe-teal: #5fc3ce;
 }
 
 @layer base {
