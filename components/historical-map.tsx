@@ -39,10 +39,11 @@ export default function HistoricMap({
 
     // used for zooming to a selected timeline point
     function zoomToPointById(pointId: string, zoomLevel = 15): void {
+        const gLayer = graphicsLayerRef.current;
 
-        const graphic = graphicsLayerRef.current?.graphics.items.find((g) => {
+        const graphic = gLayer?.graphics.toArray().find((g: Graphic) => {
             const attrs = g.attributes as Record<string, unknown> | undefined;
-            return attrs?.id === pointId;
+            return String(attrs?.id) === pointId;
         });
 
         viewRef.current?.goTo({target: graphic, zoom: zoomLevel}).catch(() => {
