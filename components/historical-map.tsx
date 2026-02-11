@@ -78,6 +78,14 @@ export default function HistoricMap({
         graphicsLayerRef.current = gLayer;
         view.map!.add(gLayer);
 
+        /*
+        async function addLayerByID(layerId: string) {
+            const kLayer = await Layer.fromPortalItem({portalItem: {id: layerId}});
+            view.map!.add(kLayer);
+        }
+
+        addLayerByID("66be186453d84308b26257021d6fb664")
+        */
         view.when(() => {
             onLayersLoaded(view.map!.layers.toArray());
 
