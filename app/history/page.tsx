@@ -25,6 +25,7 @@ interface TimelineElement {
     loading?: boolean;
     error?: string;
     images: string[];
+    sources: string[];
     filter?: string;
 }
 
@@ -86,12 +87,16 @@ export default function KMTK() {
 
             results.data.forEach((item: CsvDataRow, index) => {
                 const images = [];
+                const srcs = [];
 
                 if (prevItem && prevItem.title === item.DisplayTitle) {
                     // if the current item has the same DisplayTitle as the previous item, add its photo
                     prevItem.images.push(item.photoLink);
+                    prevItem.sources.push(item.source);
+
                 } else {
                     images.push(item.photoLink);
+                    srcs.push(item.source);
 
                     // create new timeline element
                     const newItem: TimelineElement = {
@@ -100,6 +105,7 @@ export default function KMTK() {
                         title: item.DisplayTitle,
                         description: item.description,
                         images: images,
+                        sources: srcs,
                         filter: item.filter
                     }
                     items.push(newItem);

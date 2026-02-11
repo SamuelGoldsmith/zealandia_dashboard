@@ -23,6 +23,7 @@ interface TimelineElement {
     loading?: boolean;
     error?: string;
     images?: string[];
+    sources?: string[];
 }
 
 interface TimelineLayoutProps {
@@ -75,6 +76,7 @@ export const TimelineLayout = ({
                         connectorColor={item.color || connectorColor}
                         showConnector={index !== items.length - 1}
                         images={item.images}
+                        sources={item.sources}
                     />
                 </motion.div>
             ))}

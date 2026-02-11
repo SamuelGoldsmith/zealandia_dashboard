@@ -66,7 +66,7 @@ export default function MapPanel({ id }: { id: string }) {
             <TabsTrigger value="Raw Data">Data</TabsTrigger></div>
           </TabsList>
           <div className="p-7 w-full" />
-          <div className="max-h-150 overflow-scroll w-full" >
+          <div className="max-h-full overflow-scroll w-full" >
           <TabsContent value="Layers" className="w-64 h-full">
           <div className="space-y-2 w-64">
           <h3 className="font-semibold">Layers</h3>

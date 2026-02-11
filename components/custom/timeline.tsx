@@ -119,6 +119,7 @@ interface TimelineItemProps extends Omit<HTMLMotionProps<'li'>, 'ref'> {
     /** Error message */
     error?: string;
     images?: string[];
+    sources?: string[];
 }
 
 const TimelineItem = React.forwardRef<HTMLLIElement, TimelineItemProps>(
@@ -147,6 +148,7 @@ const TimelineItem = React.forwardRef<HTMLLIElement, TimelineItemProps>(
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             transition,
             images,
+            sources,
             ...props
         },
         ref,
@@ -230,15 +232,20 @@ const TimelineItem = React.forwardRef<HTMLLIElement, TimelineItemProps>(
                                 <Carousel className="w-full h-full flex flex-col items-stretch" setApi={setApi}
                                           opts={{watchDrag: false}}
                                 >
-                                    <CarouselContent className={'lg:h-[50vh] w-full flex items-stretch'}>
+                                    <CarouselContent className={'h-full w-full flex items-stretch'}>
                                         {images && images.map((img, index) => (
                                             <CarouselItem key={index} className="h-full w-full flex items-stretch">
-                                                <div className="relative w-full h-full items-center justify-center flex">
+                                                <div className="relative w-full h-full items-center justify-center flex flex-col">
                                                     <img
                                                         src={img}
                                                         alt={""}
-                                                        className="object-cover"
+                                                        className="size-full"
                                                     />
+                                                    <a href={sources? sources[index] : "/"}
+                                                       className={"hover:underline"}
+                                                       target="_blank"
+                                                       rel="noopener noreferrer"
+                                                    >Image credit</a>
                                                 </div>
                                             </CarouselItem>
                                         ))}
