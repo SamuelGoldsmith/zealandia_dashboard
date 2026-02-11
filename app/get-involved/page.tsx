@@ -1,6 +1,7 @@
 import {TextBox} from "@/components/text-box";
 import Image from "next/image";
 import {Story} from "@/components/story";
+
 export default function getInvolved() {
     return (
         <div className={"flex flex-col w-full"}>
@@ -10,7 +11,7 @@ export default function getInvolved() {
             <Story className=" pb-10">{/*zealandia*/}
                 <div className="flex justify-center items-center w-full mt-4 sm:flex-wrap">
                 <a className="mx-3 my-auto" href={"https://www.visitzealandia.com/"} target="_blank" >
-                <Image src={"/partners/Zealandia.webp"} alt={"Zealandia Logo"} width={100} height={100} className={"m-3 rounded-sm align-middle"}/>
+                    <Image src={"/partners/Zealandia.webp"} alt={"Zealandia Logo"} width={100} height={100} className={"m-3 rounded-sm align-middle"}/>
                </a>
                 <TextBox className="text-left w-8/10">
                 Zealandia Te Māra a Tāne is a not-for-profit urban ecosanctuary in Wellington, 

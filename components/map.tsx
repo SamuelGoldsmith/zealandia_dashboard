@@ -63,5 +63,5 @@ export default function ArcGISMap({ id, onLayersLoaded, onMapClick }: { id: stri
     }
   }, []);
 
-  return <div ref={mapRef} className="w-full max-w-full h-150 " />;
+  return <div ref={mapRef} className="w-full max-w-full h-[80vh]" />;
 }
