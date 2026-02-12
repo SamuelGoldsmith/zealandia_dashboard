@@ -140,7 +140,7 @@ export default function MapPanel({ id }: { id: string }) {
       </SidePanel>
 
       {/* Map takes full remaining space */}
-      <div className="flex-1 min-h-full w-auto overflow-hidden">
+      <div className="flex-1 h-full w-auto overflow-hidden">
         <ArcGISMap id={id} onLayersLoaded={setLayers} onMapClick={(data) => { setClickedData(data); setActiveTab("Raw Data"); }} />
       </div>
     </div>

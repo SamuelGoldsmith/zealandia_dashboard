@@ -234,12 +234,12 @@ const TimelineItem = React.forwardRef<HTMLLIElement, TimelineItemProps>(
                                 >
                                     <CarouselContent className={'h-full w-full flex items-stretch'}>
                                         {images && images.map((img, index) => (
-                                            <CarouselItem key={index} className="h-full w-full flex items-stretch">
-                                                <div className="relative w-full h-full items-center justify-center flex flex-col">
+                                            <CarouselItem key={index} className="h-full w-full flex items-stretch justify-center">
+                                                <div className="relative max-w-1/2 max-h-1/2 place-items-center justify-center flex flex-col">
                                                     <img
                                                         src={img}
                                                         alt={""}
-                                                        className="size-full"
+                                                        className="self-center"
                                                     />
                                                     <a href={sources? sources[index] : "/"}
                                                        className={"hover:underline"}

@@ -1,6 +1,7 @@
 import {TextBox} from "@/components/text-box";
 import Image from "next/image";
 import {Story} from "@/components/story";
+import ImageSrcWrapper from "@/components/custom/imageSrcWrapper";
 
 export default function getInvolved() {
     return (
@@ -11,7 +12,9 @@ export default function getInvolved() {
             <Story className=" pb-10">{/*zealandia*/}
                 <div className="flex justify-center items-center w-full mt-4 sm:flex-wrap">
                 <a className="mx-3 my-auto" href={"https://www.visitzealandia.com/"} target="_blank" >
-                    <Image src={"/partners/Zealandia.webp"} alt={"Zealandia Logo"} width={100} height={100} className={"m-3 rounded-sm align-middle"}/>
+                    <ImageSrcWrapper overlayText={"Sources"}>
+                        <Image src={"/partners/Zealandia.webp"} alt={"Zealandia Logo"} width={100} height={100} className={"m-3 rounded-sm align-middle"}/>
+                    </ImageSrcWrapper>
                </a>
                 <TextBox className="text-left w-8/10">
                 Zealandia Te Māra a Tāne is a not-for-profit urban ecosanctuary in Wellington, 
@@ -24,8 +27,14 @@ export default function getInvolved() {
                 </TextBox>
                 </div>
                 <div className="flex justify-center items-center w-full mt-4 sm:flex-wrap">
-                    <img src={"https://d1xuswh6q35c7x.cloudfront.net/media/images/Kakahi_3_Credit_Manaaki_Barrett_.2e16d0ba.fill-1534x767.avif"} alt={"Stream Cleaning"} className={"m-3 rounded-sm align-middle w-1/3"}/>
-                    <img src={"https://d1xuswh6q35c7x.cloudfront.net/media/images/Track_Maintenance_team._Lynn_Fr.f3a4289b.fill-2960x1480.avif"} alt={"Group on a trail"} className={"m-3 rounded-sm align-middle w-1/3"}/>
+                    <ImageSrcWrapper
+                        overlayText={"https://d1xuswh6q35c7x.cloudfront.net/media/images/Kakahi_3_Credit_Manaaki_Barrett_.2e16d0ba.fill-1534x767.avif"}
+                        wrapperClassName={"m-3 rounded-sm align-middle w-1/3"}>
+                        <img src={"https://d1xuswh6q35c7x.cloudfront.net/media/images/Kakahi_3_Credit_Manaaki_Barrett_.2e16d0ba.fill-1534x767.avif"} alt={"Stream Cleaning"} className={"m-3 rounded-sm align-middle"}/>
+                    </ImageSrcWrapper>
+                    <ImageSrcWrapper overlayText={"https://d1xuswh6q35c7x.cloudfront.net/media/images/Track_Maintenance_team._Lynn_Fr.f3a4289b.fill-2960x1480.avif"} wrapperClassName={"m-3 rounded-sm align-middle w-1/3"}>
+                        <img src={"https://d1xuswh6q35c7x.cloudfront.net/media/images/Track_Maintenance_team._Lynn_Fr.f3a4289b.fill-2960x1480.avif"} alt={"Group on a trail"} className={"m-3 rounded-sm align-middle"}/>
+                    </ImageSrcWrapper>
                 </div>
                 <div className="flex justify-center items-center w-full mt-4 sm:flex-wrap">
                     <a className="text-blue-500 hover:underline" href={"https://www.visitzealandia.com/learn/"} target="_blank">

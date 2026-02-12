@@ -78,16 +78,17 @@ export default function HistoricMap({
         graphicsLayerRef.current = gLayer;
         view.map!.add(gLayer);
 
-        /*
-        async function addLayerByID(layerId: string) {
-            const kLayer = await Layer.fromPortalItem({portalItem: {id: layerId}});
-            view.map!.add(kLayer);
+        type PopupControllable = { popupEnabled?: boolean; popupTemplate?: unknown | null };
+        function disableLayerPopups(layer: Layer): void {
+            const l = layer as unknown as PopupControllable;
+            if (typeof l.popupEnabled !== 'undefined') l.popupEnabled = false;
+            if (typeof l.popupTemplate !== 'undefined') l.popupTemplate = null;
         }
 
-        addLayerByID("66be186453d84308b26257021d6fb664")
-        */
+
         view.when(() => {
             onLayersLoaded(view.map!.layers.toArray());
+            view.map!.layers.toArray().forEach(disableLayerPopups)
 
             // remove zoom buttons, compass and attribution text from the view UI
             try {
@@ -105,12 +106,17 @@ export default function HistoricMap({
             // click handling with hitTest
             view.on("click", async (event) => {
                 try {
-                    const hit = await view.hitTest(event);
+                    // only test the graphics layer so hits from other layers are ignored
+                    const hit = await view.hitTest(event, { include: [gLayer] });
                     if (hit.results && hit.results.length) {
                         const r = hit.results[0];
-                        const graphic = 'graphic' in r ? r.graphic : null;
 
-                        setSelectedId(String(graphic?.attributes?.id));
+                        if(r.layer === gLayer) {
+                            const graphic = 'graphic' in r ? r.graphic : null;
+
+                            setSelectedId(String(graphic?.attributes?.id));
+                        }
+
                     }
                 } catch (err) {
                     // forward a minimal payload on error
@@ -149,7 +155,7 @@ export default function HistoricMap({
 
         const graphics = points.map((p) => {
             const pt = new Point({x: p.x, y: p.y, spatialReference: {wkid: 4326}});
-            console.log(p.x, p.y);
+
             const graphic = new Graphic({
                 geometry: pt,
                 symbol,

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CopilotDiffPersistence">
+    <option name="pendingDiffs">
+      <map>
+        <entry key="$PROJECT_DIR$/components/custom/imageSrcWrapper.tsx">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/components/custom/imageSrcWrapper.tsx" />
+              <option name="originalContent" value="import React from &quot;react&quot;;&#10;&#10;interface ImageSrcWrapperProps {&#10;  /** text shown over the image in the bottom-left */&#10;  overlayText?: string;&#10;  /** optional extra classes for the overlay container */&#10;  overlayClassName?: string;&#10;  /** optional extra classes for the outer wrapper */&#10;  wrapperClassName?: string;&#10;  /** children (parent provides the Image) */&#10;  children?: React.ReactNode;&#10;}&#10;&#10;/**&#10; * ImageSrcWrapper&#10; * - does NOT render the Image; parent should pass an Image as children&#10; * - overlayText (optional) will be rendered bottom-left, small &amp; semi-transparent&#10; */&#10;export default function ImageSrcWrapper({&#10;  overlayText,&#10;  overlayClassName,&#10;  wrapperClassName,&#10;  children,&#10;}: ImageSrcWrapperProps) {&#10;  return (&#10;    // inline-block keeps image display/flow unchanged while allowing absolute overlay&#10;    &lt;div className={`relative inline-block ${wrapperClassName ?? &quot;&quot;}`}&gt;&#10;      {children}&#10;&#10;      {overlayText ? (&#10;        &lt;span&#10;          className={&#10;            // small, semi-transparent text with subtle background; non-interactive so clicks pass through to the image&#10;            `absolute left-2 bottom-2 text-xs text-white/80 bg-black/25 px-1 py-0.5 rounded pointer-events-none ` +&#10;            (overlayClassName ? ` ${overlayClassName}` : &quot;&quot;)&#10;          }&#10;        &gt;&#10;          {overlayText}&#10;        &lt;/span&gt;&#10;      ) : null}&#10;    &lt;/div&gt;&#10;  );&#10;}&#10;" />
+              <option name="updatedContent" value="import React from &quot;react&quot;;&#10;&#10;interface ImageSrcWrapperProps {&#10;  /** text shown over the image in the bottom-left */&#10;  overlayText?: string;&#10;  /** optional extra classes for the overlay container */&#10;  overlayClassName?: string;&#10;  /** optional extra classes for the outer wrapper */&#10;  wrapperClassName?: string;&#10;  /** children (parent provides the Image) */&#10;  children?: React.ReactNode;&#10;}&#10;&#10;/**&#10; * ImageSrcWrapper&#10; * - does NOT render the Image; parent should pass an Image as children&#10; * - overlayText (optional) will be rendered bottom-left, small &amp; semi-transparent&#10; */&#10;export default function ImageSrcWrapper({&#10;  overlayText,&#10;  overlayClassName,&#10;  wrapperClassName,&#10;  children,&#10;}: ImageSrcWrapperProps) {&#10;  return (&#10;    // inline-block keeps image display/flow unchanged while allowing absolute overlay&#10;    &lt;div className={`relative inline-block ${wrapperClassName ?? &quot;&quot;}`}&gt;&#10;      {children}&#10;&#10;      {overlayText ? (&#10;        &lt;span&#10;          className={&#10;            // small, semi-transparent text with subtle background; non-interactive so clicks pass through to the image&#10;            `absolute left-2 bottom-2 text-xs text-white/80 bg-black/25 px-1 py-0.5 rounded pointer-events-none ` +&#10;            (overlayClassName ? ` ${overlayClassName}` : &quot;&quot;)&#10;          }&#10;        &gt;&#10;          {overlayText}&#10;        &lt;/span&gt;&#10;      ) : null}&#10;    &lt;/div&gt;&#10;  );&#10;}" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

@@ -7,6 +7,7 @@ import Layer from "@arcgis/core/layers/Layer";
 import Papa, {ParseResult} from 'papaparse';
 import {TextBox} from "@/components/text-box";
 import {DropdownMenuContent, DropdownMenuTrigger, DropdownMenu} from "@/components/ui/dropdown-menu";
+import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
 import {Checkbox} from "@/components/ui/checkbox";
 import {Button} from "@/components/ui/button";
 import dynamic from "next/dynamic";
@@ -55,6 +56,8 @@ type PointFeature = {
     filter?: string;
 };
 
+const dataLink: string = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQx-MJXFVWXP1KqLkkxECQK7Gwiqn9nk_84gM0-6t1MbBH_HolAsf9o223PhgsU77GbRl9twltB9r8M/pub?gid=0&single=true&output=csv"
+
 export default function KMTK() {
 
     const [layers, setLayers] = useState<Layer[]>([]);
@@ -71,7 +74,7 @@ export default function KMTK() {
     useEffect(() => {
 
         async function loadCSV() {
-            const res = await fetch("/timelineData.csv")
+            const res = await fetch(dataLink)
             if (!res.ok) throw new Error(`Failed to fetch CSV: ${res.statusText}`);
             const csv: string = await res.text();
 
@@ -178,20 +181,24 @@ export default function KMTK() {
                     />
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button variant="default" className={"self-center p-3 w-1/10 text-m"}>Filter</Button>
+                            <Button variant="default" className={"self-center p-3 w-1/10 text-m text-vivid-azure hover:underline"}>Filter</Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className={"bg-primary"}>
                             {filters.map((filter: filterData, index) => (
                                 <div key={index} className={"flex flex-row gap-3"}>
-                                    <Checkbox
-                                        className={"bg-primary-tp"}
-                                        checked={filter.active}
-                                        onCheckedChange={() => {
-                                            setFilters(prev =>
-                                                prev.map((f, i) => (i === index ? { ...f, active: !f.active } : f)))
-                                        }}
-                                    />
-                                    <p>{filter.name}</p>
+                                    <Field orientation={"horizontal"} className={"mb-3"}>
+                                        <Checkbox
+                                            className={"border-vivid-azure data-[state=checked]:border-vivid-azure hover:border-vivid-orange data-[state=checked]:hover:border-vivid-orange"}
+                                            checked={filter.active}
+                                            onCheckedChange={() => {
+                                                setFilters(prev =>
+                                                    prev.map((f, i) => (i === index ? { ...f, active: !f.active } : f)))
+                                            }}
+                                        />
+                                        <FieldLabel className={"text-vivid-azure"}>
+                                            {filter.name}
+                                        </FieldLabel>
+                                    </Field>
                                 </div>
                             ))}
                         </DropdownMenuContent>
@@ -209,7 +216,7 @@ export default function KMTK() {
             <div className={"lg:w-[40vw] lg:h-full w-full h-[40vh] bg-white place-items-center"}>
                 {/*66be186453d84308b26257021d6fb664*/}
                 <HistoricMap
-                    id={""}
+                    id={"66be186453d84308b26257021d6fb664"}
                     selectedId={selectedID}
                     setSelectedId={setSelectedID}
                     onLayersLoaded={setLayers}
