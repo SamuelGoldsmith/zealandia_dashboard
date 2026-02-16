@@ -189,7 +189,9 @@ const TimelineItem = React.forwardRef<HTMLLIElement, TimelineItemProps>(
             >
                 {/* Date */}
                 <div className="flex flex-col justify-start pt-1">
-                    <TimelineTime className="text-right pr-4">{date}</TimelineTime>
+                    {Number(date) > 0 ? (
+                        <TimelineTime className="text-right pr-4">{date}</TimelineTime>
+                    ) : null}
                 </div>
 
                 {/* Timeline dot and connector */}
@@ -310,7 +312,7 @@ TimelineItem.displayName = 'TimelineItem';
 
 interface TimelineTimeProps extends React.HTMLAttributes<HTMLTimeElement> {
     /** Date string, Date object, or timestamp */
-    date?: string | Date | number;
+    date?: string;
     /** Optional format for displaying the date */
     format?: Intl.DateTimeFormatOptions;
 }
@@ -343,7 +345,7 @@ const TimelineTime = React.forwardRef<HTMLTimeElement, TimelineTimeProps>(
         return (
             <time
                 ref={ref}
-                dateTime={date ? new Date(date).toISOString() : undefined}
+                dateTime={(date && Number(date) > 0) ? new Date(date).toISOString() : undefined}
                 className={cn('text-md font-medium tracking-tight text-muted-foreground', className)}
                 {...props}
             >
