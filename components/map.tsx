@@ -72,6 +72,7 @@ export default function ArcGISMap({ id, layerData, filters }: Props) {
       ui: { components: [] },
     });
 
+    // map widget add-ons
     const locate = new Locate({
       view: view,
       container: locateRef.current,

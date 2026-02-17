@@ -3,9 +3,9 @@
 'use client';
 
 import * as React from 'react';
-import { cn } from '@/lib/utils';
-import { cva, type VariantProps } from 'class-variance-authority';
-import { motion, HTMLMotionProps, AnimatePresence } from 'framer-motion';
+import {cn} from '@/lib/utils';
+import {cva, type VariantProps} from 'class-variance-authority';
+import {motion, HTMLMotionProps, AnimatePresence} from 'framer-motion';
 import {
     Carousel,
     type CarouselApi,
@@ -50,11 +50,11 @@ interface TimelineProps
  * @component
  */
 const Timeline = React.forwardRef<HTMLOListElement, TimelineProps>(
-    ({ className, iconsize, size, children, ...props }, ref) => {
+    ({className, iconsize, size, children, ...props}, ref) => {
         const items = React.Children.toArray(children);
 
         if (items.length === 0) {
-            return <TimelineEmpty />;
+            return <TimelineEmpty/>;
         }
 
         return (
@@ -62,7 +62,7 @@ const Timeline = React.forwardRef<HTMLOListElement, TimelineProps>(
                 ref={ref}
                 aria-label="Timeline"
                 className={cn(
-                    timelineVariants({ size }),
+                    timelineVariants({size}),
                     'relative min-h-[600px] w-full py-4',
                     className
                 )}
@@ -120,6 +120,7 @@ interface TimelineItemProps extends Omit<HTMLMotionProps<'li'>, 'ref'> {
     error?: string;
     images?: string[];
     sources?: string[];
+    dataSource?: string;
 }
 
 const TimelineItem = React.forwardRef<HTMLLIElement, TimelineItemProps>(
@@ -149,6 +150,7 @@ const TimelineItem = React.forwardRef<HTMLLIElement, TimelineItemProps>(
             transition,
             images,
             sources,
+            dataSource,
             ...props
         },
         ref,
@@ -184,7 +186,7 @@ const TimelineItem = React.forwardRef<HTMLLIElement, TimelineItemProps>(
         const content = (
             <div
                 className="grid grid-cols-[4rem_auto_1fr] gap-2 items-start cursor-pointer"
-                {...(status === 'in-progress' ? { 'aria-current': 'step' } : {})}
+                {...(status === 'in-progress' ? {'aria-current': 'step'} : {})}
                 onClick={() => setSelectedID(id || '0')}
             >
                 {/* Date */}
@@ -197,16 +199,16 @@ const TimelineItem = React.forwardRef<HTMLLIElement, TimelineItemProps>(
                 {/* Timeline dot and connector */}
                 <div className="flex flex-col items-center relative">
                     <div className="relative z-10">
-                        <TimelineIcon icon={icon} color={iconColor} status={status} iconSize={iconsize} />
+                        <TimelineIcon icon={icon} color={iconColor} status={status} iconSize={iconsize}/>
                     </div>
                     {showConnector && (
                         <motion.div
                             layout
                             initial={false}
-                            animate={{ height: selected ? '70vh' : '2rem' }}
-                            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                            animate={{height: selected ? '70vh' : '2rem'}}
+                            transition={{type: 'spring', stiffness: 300, damping: 30}}
                             className="w-0.5 bg-timeline-line mt-1 self-center"
-                            style={{ height: selected ? '4rem' : '2rem' }}
+                            style={{height: selected ? '4rem' : '2rem'}}
                         />
                     )}
                 </div>
@@ -220,31 +222,46 @@ const TimelineItem = React.forwardRef<HTMLLIElement, TimelineItemProps>(
                         {selected && (
                             <motion.div
                                 key="description"
-                                initial={{ height: 0, opacity: 0 }}
-                                animate={{ height: 'auto', opacity: 1 }}
-                                exit={{ height: 0, opacity: 0 }}
-                                transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                                style={{ overflow: 'hidden' }}
+                                initial={{height: 0, opacity: 0}}
+                                animate={{height: 'auto', opacity: 1}}
+                                exit={{height: 0, opacity: 0}}
+                                transition={{type: 'spring', stiffness: 300, damping: 30}}
+                                style={{overflow: 'hidden'}}
                                 className={"mr-3"}
                             >
-                                <TimelineDescription className="mb-6">
-                                    {description}
-                                </TimelineDescription>
+                                <div className={'flex flex-col'}>
+                                    <TimelineDescription className="mb-3">
+                                        {description}
+                                    </TimelineDescription>
+                                    {dataSource && (
+                                        <p className={'mb-6'}>
+                                            For more information,
+                                            <a href={dataSource}
+                                               className={"text-takahe-teal pl-1 hover:underline"}
+                                               target="_blank"
+                                               rel="noopener noreferrer">
+                                                read here
+                                            </a>
+                                        </p>
+                                    )}
+                                </div>
 
                                 <Carousel className="w-full h-full flex flex-col items-stretch" setApi={setApi}
                                           opts={{watchDrag: false}}
                                 >
                                     <CarouselContent className={'h-full w-full flex items-stretch'}>
                                         {images && images.map((img, index) => (
-                                            <CarouselItem key={index} className="h-full w-full flex items-stretch justify-center">
-                                                <div className="relative max-w-1/2 max-h-1/2 place-items-center justify-center flex flex-col">
+                                            <CarouselItem key={index}
+                                                          className="h-full w-full flex items-stretch justify-center">
+                                                <div
+                                                    className="relative max-w-1/2 max-h-1/2 place-items-center justify-center flex flex-col">
                                                     <img
                                                         src={img}
                                                         alt={""}
                                                         className="self-center"
                                                     />
-                                                    <a href={sources? sources[index] : "/"}
-                                                       className={"hover:underline"}
+                                                    <a href={sources ? sources[index] : "/"}
+                                                       className={"text-takahe-teal hover:underline"}
                                                        target="_blank"
                                                        rel="noopener noreferrer"
                                                     >Image credit</a>
@@ -270,7 +287,7 @@ const TimelineItem = React.forwardRef<HTMLLIElement, TimelineItemProps>(
                     </AnimatePresence>
                 </TimelineContent>
             </div>
-         );
+        );
 
         // Filter out Framer Motion specific props
         const {
@@ -324,7 +341,7 @@ const defaultDateFormat: Intl.DateTimeFormatOptions = {
 };
 
 const TimelineTime = React.forwardRef<HTMLTimeElement, TimelineTimeProps>(
-    ({ className, date, format, children, ...props }, ref) => {
+    ({className, date, format, children, ...props}, ref) => {
         const formattedDate = React.useMemo(() => {
             if (!date) return '';
 
@@ -362,7 +379,7 @@ const TimelineConnector = React.forwardRef<
     status?: 'completed' | 'in-progress' | 'pending';
     color?: 'primary' | 'secondary' | 'muted' | 'accent';
 }
->(({ className, status = 'completed', color, ...props }, ref) => (
+>(({className, status = 'completed', color, ...props}, ref) => (
     <div
         ref={ref}
         className={cn(
@@ -382,7 +399,7 @@ const TimelineConnector = React.forwardRef<
 TimelineConnector.displayName = 'TimelineConnector';
 
 const TimelineHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-    ({ className, ...props }, ref) => (
+    ({className, ...props}, ref) => (
         <div ref={ref} className={cn('flex items-center gap-4', className)} {...props} />
     ),
 );
@@ -391,7 +408,7 @@ TimelineHeader.displayName = 'TimelineHeader';
 const TimelineTitle = React.forwardRef<
     HTMLHeadingElement,
     React.HTMLAttributes<HTMLHeadingElement>
->(({ className, children, ...props }, ref) => (
+>(({className, children, ...props}, ref) => (
     <h3
         ref={ref}
         className={cn('font-semibold leading-none tracking-tight text-secondary-foreground text-xl', className)}
@@ -429,7 +446,7 @@ const TimelineIcon = ({
         primary: 'bg-primary text-primary-foreground',
         secondary: 'bg-secondary text-secondary-foreground',
         muted: 'bg-muted text-muted-foreground',
-        accent: 'bg-timeline-icon text-accent-foreground',
+        accent: 'bg-vivid-orange text-accent-foreground', // <- custom color here
         destructive: 'bg-destructive text-destructive-foreground',
     };
 
@@ -446,7 +463,7 @@ const TimelineIcon = ({
                     {icon}
                 </div>
             ) : (
-                <div className={cn('rounded-full', iconSizeClasses[iconSize])} />
+                <div className={cn('rounded-full', iconSizeClasses[iconSize])}/>
             )}
         </div>
     );
@@ -455,19 +472,19 @@ const TimelineIcon = ({
 const TimelineDescription = React.forwardRef<
     HTMLParagraphElement,
     React.HTMLAttributes<HTMLParagraphElement>
->(({ className, ...props }, ref) => (
+>(({className, ...props}, ref) => (
     <p ref={ref} className={cn('text-lg text-muted-foreground', className)} {...props} />
 ));
 TimelineDescription.displayName = 'TimelineDescription';
 
 const TimelineContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-    ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn('flex flex-col gap-2 pl-2', className)} {...props} />)
+    ({className, ...props}, ref) => (
+        <div ref={ref} className={cn('flex flex-col gap-2 pl-2', className)} {...props} />)
 );
 TimelineContent.displayName = 'TimelineContent';
 
 const TimelineEmpty = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-    ({ className, children, ...props }, ref) => (
+    ({className, children, ...props}, ref) => (
         <div
             ref={ref}
             className={cn('flex flex-col items-center justify-center p-8 text-center', className)}

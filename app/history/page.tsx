@@ -27,6 +27,7 @@ interface TimelineElement {
     loading?: boolean;
     error?: string;
     images: string[];
+    dataSource?: string;
     sources: string[];
     filter?: string;
 }
@@ -36,6 +37,7 @@ interface CsvDataRow {
     DisplayTitle: string;
     PhotoTitle: string;
     description: string;
+    dataSource: string;
     filter: string;
     photoLink: string;
     source: string;
@@ -115,6 +117,7 @@ export default function KMTK() {
                         date: String(item.Year),
                         title: item.DisplayTitle,
                         description: item.description,
+                        dataSource: item.dataSource,
                         images: images,
                         sources: srcs,
                         filter: item.filter

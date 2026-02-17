@@ -24,6 +24,7 @@ interface TimelineElement {
     error?: string;
     images?: string[];
     sources?: string[];
+    dataSource?: string;
 }
 
 interface TimelineLayoutProps {
@@ -77,6 +78,7 @@ export const TimelineLayout = ({
                         showConnector={index !== items.length - 1}
                         images={item.images}
                         sources={item.sources}
+                        dataSource={item.dataSource}
                     />
                 </motion.div>
             ))}
