@@ -1,50 +1,115 @@
+'use client';
+
 import {TextBox} from "@/components/text-box";
 import Image from "next/image";
 import {Story} from "@/components/story";
 import ImageSrcWrapper from "@/components/custom/imageSrcWrapper";
+import {useEffect, useState} from "react";
+import Papa, {ParseResult} from "papaparse";
 
-export default function getInvolved() {
+interface CsvDataRow {
+    Description: string;
+    LinkToDescription: string;
+    LinkName: string;
+    ImageLink: string;
+    ImageCredit: string;
+}
+
+interface GetInvolvedEntry {
+    Description: string;
+    Links: [
+        {
+            LinkToDescription: string;
+            LinkName: string;
+        }
+    ]
+    ImageLink: string;
+    ImageCredit: string;
+}
+
+const dataLink = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQx-MJXFVWXP1KqLkkxECQK7Gwiqn9nk_84gM0-6t1MbBH_HolAsf9o223PhgsU77GbRl9twltB9r8M/pub?gid=375773158&single=true&output=csv"
+//const dataLink = process.env.GET_INVOLVED_CSV_URL
+
+export default function GetInvolved() {
+
+    const [data, setData] = useState<GetInvolvedEntry[]>([]);
+
+    useEffect(() => {
+
+        async function loadCSV() {
+            const mergeData: GetInvolvedEntry[] = [];
+            let prevItem: GetInvolvedEntry | null = null;
+
+            if (!dataLink) {
+                console.error("CSV URL is not defined in environment variables.");
+                return;
+            }
+            const res = await fetch(dataLink)
+            if (!res.ok) throw new Error(`Failed to fetch CSV: ${res.statusText}`);
+            const csv: string = await res.text();
+
+            const results: ParseResult<CsvDataRow> = Papa.parse<CsvDataRow>(csv, {
+                header: true,
+                skipEmptyLines: true,
+            });
+
+            results.data.forEach((item) => {
+                if (prevItem && item.Description === prevItem.Description) {
+                    prevItem.Links.push({
+                        LinkToDescription: item.LinkToDescription,
+                        LinkName: item.LinkName,
+                    });
+                } else {
+                    const newEntry: GetInvolvedEntry = {
+                        Description: item.Description,
+                        Links: [
+                            {
+                                LinkToDescription: item.LinkToDescription,
+                                LinkName: item.LinkName,
+                            }
+                        ],
+                        ImageLink: item.ImageLink,
+                        ImageCredit: item.ImageCredit,
+
+                    }
+                    mergeData.push(newEntry);
+                    prevItem = newEntry;
+                }
+            })
+
+            setData(mergeData)
+        }
+
+        loadCSV();
+    }, []);
+
     return (
-        <div className={"flex flex-col w-full"}>
-
-            <Story className=" pb-10">{/*zealandia*/}
-                <div className="flex justify-center items-center w-full mt-4 sm:flex-wrap">
-                <a className="mx-3 my-auto" href={"https://www.visitzealandia.com/"} target="_blank" >
-                        <Image src={"/partners/Zealandia.webp"} alt={"Zealandia Logo"} width={100} height={100} className={"m-3 rounded-sm align-middle"}/>
-               </a>
-                <TextBox className="text-left w-8/10">
-                Zealandia Te Māra a Tāne is a not-for-profit urban ecosanctuary in Wellington, 
-                dedicated to restoring the forest and freshwater ecosystems of a 225-hectare valley 
-                and protecting rare native wildlife inside a predator-exclusion fence. They have successfully 
-                reintroduced many native species and helped increase bird biodiversity in and around the city. 
-                Zealandia offers conservation education, visitor experiences, and community programmes that connect 
-                people with Aotearoa’s unique environment. Their long-term vision is to inspire people to live with 
-                nature both locally and beyond. 
-                </TextBox>
-                </div>
-                <div className="flex justify-center items-center w-full mt-4 sm:flex-wrap">
-                    <ImageSrcWrapper
-                        overlayText={"https://d1xuswh6q35c7x.cloudfront.net/media/images/Kakahi_3_Credit_Manaaki_Barrett_.2e16d0ba.fill-1534x767.avif"}
-                        wrapperClassName={"m-3 rounded-sm align-middle w-1/3"}>
-                        <img src={"https://d1xuswh6q35c7x.cloudfront.net/media/images/Kakahi_3_Credit_Manaaki_Barrett_.2e16d0ba.fill-1534x767.avif"} alt={"Stream Cleaning"} className={"m-3 rounded-sm align-middle"}/>
-                    </ImageSrcWrapper>
-                    <ImageSrcWrapper overlayText={"https://d1xuswh6q35c7x.cloudfront.net/media/images/Track_Maintenance_team._Lynn_Fr.f3a4289b.fill-2960x1480.avif"} wrapperClassName={"m-3 rounded-sm align-middle w-1/3"}>
-                        <img src={"https://d1xuswh6q35c7x.cloudfront.net/media/images/Track_Maintenance_team._Lynn_Fr.f3a4289b.fill-2960x1480.avif"} alt={"Group on a trail"} className={"m-3 rounded-sm align-middle"}/>
-                    </ImageSrcWrapper>
-                </div>
-                <div className="flex justify-center items-center w-full mt-4 sm:flex-wrap">
-                    <a className="text-blue-500 hover:underline" href={"https://www.visitzealandia.com/learn/"} target="_blank">
-                        Zealandia Learn Page
-                    </a>
-                    <a className="text-blue-500 hover:underline ml-4" href={"https://www.visitzealandia.com/news-stories/"} target="_blank">
-                        Zealandia News & Stories
-                    </a>
-                    <a className="text-blue-500 hover:underline ml-4" href={"https://www.visitzealandia.com/whats-on/ "} target="_blank">
-                        Zealandia Upcoming Events
-                    </a>
-                </div>
-            </Story>
-
-        </div>
+        data.map((item, index) => {
+            return (
+                <Story key={index} className="flex-wrap lg:flex-nowrap md:flex-nowrap flex pb-10">
+                    <div className={"flex flex-wrap lg:flex-nowrap md:flex-nowrap align-top w-full"}>
+                        <ImageSrcWrapper overlayText={item.ImageCredit} wrapperClassName={"p-3 w-1/3"}>
+                            <img
+                                src={item.ImageLink}
+                                alt={item.ImageCredit}
+                                className={"self-center w-full"}
+                            />
+                        </ImageSrcWrapper>
+                        <div className={"flex flex-col w-2/3 p-3 justify-center"}>
+                            <TextBox
+                                className="text-center w-full text-2xl"
+                                type="browns"
+                                text={item.Description}
+                            />
+                            {item.Links.map((link, linkIndex) => (
+                                <a key={linkIndex} className="self-center text-xl hover:underline pb-3" href={link.LinkToDescription} target="_blank">
+                                    {link.LinkName}
+                                </a>
+                            ))}
+                        </div>
+                    </div>
+                </Story>
+            );
+        })
     );
 }
