@@ -102,9 +102,9 @@ export default function GetInvolved() {
                                 className={`text-center w-full text-xl ${(index % 2) == 0 ? 'bg-takahe-10' : ''}`}
                                 text={item.Description}
                             />
-                            <div className="flex self-center">
+                            <div className="flex flex-col self-center">
                                 {item.Links.map((link, linkIndex) => (
-                                    <a key={linkIndex} className="text-sm hover:underline" href={link.LinkToDescription} target="_blank">
+                                    <a key={linkIndex} className="text-sm hover:underline pt-3 self-center" href={link.LinkToDescription} target="_blank">
                                         {link.LinkName}
                                     </a>
                                 ))}</div>
