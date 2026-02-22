@@ -13,3 +13,11 @@ export function isValidUrl(string: string): boolean{
     return false;
   }
 }
+
+export function isKLayer(name: string): boolean{
+  return name.toLowerCase().startsWith('k ')
+}
+
+export function trimKLayer(name: string): string{
+  return name.substring(2)
+}

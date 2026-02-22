@@ -10,8 +10,11 @@ import { House, Ellipsis, ChevronLeft, ChevronRight } from "lucide-react";
 import Layer from "@arcgis/core/layers/Layer";
 import { PassThrough } from "stream";
 import { Collapsible } from "radix-ui";
-import {LayerCollapse } from "./collapsible";
+import { LayerCollapse } from "./collapsible";
 import { Checkbox } from "./ui/checkbox";
+import { isKLayer } from "@/lib/utils";
+import { Switch } from "./ui/switch";
+import { Label } from "./ui/label";
 
 type Props = {
   id: string;
@@ -43,7 +46,8 @@ export default function ArcGISMap({ id, layerData, filters }: Props) {
     if (numIndex === -1) return name;
     return name.substring(0, numIndex);
   }
- const [layers, setLayers] = useState<DataLayer[]>([]);
+  const [layers, setLayers] = useState<DataLayer[]>([]);
+  const [kOnly, setKOnly] = useState<boolean>(true)
   const isSubFilter = (filter: FilterLL, tags: string[]): boolean => {
     if (filter.name === "Home") return true;
     if (tags.some(t => t.toLowerCase() === filter.name.toLowerCase())) return true;
@@ -93,7 +97,7 @@ export default function ArcGISMap({ id, layerData, filters }: Props) {
         const layer = mapLayers.find((l) => l.title === data.id);
         if (layer) {
           data.layer = layer;
-        } 
+        }
       });
       mapLayers.filter((l) => !layerData.some((d) => d.id === l.title)).forEach((l) => {
         unknownLayers.push({
@@ -116,71 +120,78 @@ export default function ArcGISMap({ id, layerData, filters }: Props) {
   }, [id]);
 
 
-const toggleLayer = (dLayer: DataLayer) => {
-  if (!dLayer.layer) return;
-  dLayer.layer.visible = !dLayer.layer.visible;
-  setLayers([...layers]);
-};
+  const toggleLayer = (dLayer: DataLayer) => {
+    if (!dLayer.layer) return;
+    dLayer.layer.visible = !dLayer.layer.visible;
+    setLayers([...layers]);
+  };
 
-
-const [activeFilter, setActiveFilter] = useState<FilterLL>(filters);
-const [prevFilter, setPrevFilter] = useState<FilterLL[]>([]);
+  const toggleKLayers = () => {
+    for (const dL of layers) {
+      dL.layer.visible = dL.layer.visible && (isKLayer(dL.id) || !kOnly)
+    }
+    setKOnly(!kOnly)
+    setLayers([...layers])
+  }
+  const [activeFilter, setActiveFilter] = useState<FilterLL>(filters);
+  const [prevFilter, setPrevFilter] = useState<FilterLL[]>([]);
   return (
     <div>
-    <div className="h-[10vh] w-full flex bg-deep-brown text-primary items-center px-4">
-      <button 
-      className="rounded-md px-4"
-      onClick={() => {
-        setActiveFilter(filters);
-        setPrevFilter([]);
-      }}><House size={20} className=""/></button>
-      {prevFilter.length > 2 && (
-        <button className="ml-2 hover:underline">
-          <Ellipsis size={20} className=""/>
-        </button>
-      )}
-      {activeFilter.name !== "Home" && (
-        <button className="ml-4 text-primary flex hover:underline" onClick={() => {
-          const prev = prevFilter.pop();
-          if (prev) {
-            setActiveFilter(prev);
-          }
-        }}>
-          {prevFilter.length > 1 ? trimClass(prevFilter[prevFilter.length - 1].name) : ""}
-          <ChevronLeft className="ml-4"/>
-        </button>
-      )}
-      <p className="ml-4 font-bold">{activeFilter.name !== "Home" ? trimClass(activeFilter.name) : ""}</p>
-      {activeFilter.next.length > 0 && (
-        // <ChevronRight className="ml-2" />
-        <div className="h-[3vh] border-l border-primary ml-4"/>
-      )}
-      {activeFilter.next.map((f) => (
-        <button className="ml-4 text-primary hover:underline hover:pointer hover:text-lg transition-all duration-3" key={f.name} onClick={() => {
-          setPrevFilter(prevFilter.concat(activeFilter));
-          setActiveFilter(f);
-        }}>
-          {trimClass(f.name)}
-        </button>
-      ))}
-    </div>
-    <div className="flex h-[73vh] w-screen">
-      <div className="w-1/5 h-full bg-white p-2 rounded shadow z-10  overflow-auto">
-        <div className="font-semibold mb-1">Layers</div>
-        {layers.filter((l) => isSubFilter(activeFilter, l.tags)).map((dLayer) => (
-        <label key={dLayer.id} className="flex items-center gap-2 text-sm border p-2 h-auto bg-takahe-10">
-          <Checkbox checked={dLayer.layer?.visible ?? false} onCheckedChange={() => toggleLayer(dLayer)} className="mb-auto mt-2 border-2 border-takahe bg-white data-[state=checked]:bg-takahe data-[state=checked]:border-takahe text-white" disabled={!dLayer.layer}/>
-          <LayerCollapse title={dLayer.title} description={dLayer.description} links={dLayer.links} linkTitles={dLayer.linkTitles}/>
-        </label>
-      ))}
+      <div className="h-[10vh] w-full flex bg-deep-brown text-primary items-center px-4">
+        <button
+          className="rounded-md px-4"
+          onClick={() => {
+            setActiveFilter(filters);
+            setPrevFilter([]);
+          }}><House size={20} className="" /></button>
+        {prevFilter.length > 2 && (
+          <button className="ml-2 hover:underline">
+            <Ellipsis size={20} className="" />
+          </button>
+        )}
+        {activeFilter.name !== "Home" && (
+          <button className="ml-4 text-primary flex hover:underline" onClick={() => {
+            const prev = prevFilter.pop();
+            if (prev) {
+              setActiveFilter(prev);
+            }
+          }}>
+            {prevFilter.length > 1 ? trimClass(prevFilter[prevFilter.length - 1].name) : ""}
+            <ChevronLeft className="ml-4" />
+          </button>
+        )}
+        <p className="ml-4 font-bold">{activeFilter.name !== "Home" ? trimClass(activeFilter.name) : ""}</p>
+        {activeFilter.next.length > 0 && (
+          // <ChevronRight className="ml-2" />
+          <div className="h-[3vh] border-l border-primary ml-4" />
+        )}
+        {activeFilter.next.map((f) => (
+          <button className="ml-4 text-primary hover:underline hover:pointer hover:text-lg transition-all duration-3" key={f.name} onClick={() => {
+            setPrevFilter(prevFilter.concat(activeFilter));
+            setActiveFilter(f);
+          }}>
+            {trimClass(f.name)}
+          </button>
+        ))}
+        <Switch className=" ml-auto mr-3 data-[state=checked]:bg-takahe-60 bg-gray-600" onCheckedChange={toggleKLayers} defaultChecked = {kOnly}/> <Label>Catchment Only</Label>
+      </div>
+      <div className="flex h-[73vh] w-screen">
+        <div className="w-1/5 h-full bg-white p-2 rounded shadow z-10  overflow-auto">
+          <div className="mb-1 flex w-full items-center justify-between"><h2 className="mr-auto">Layers</h2></div>
+          {layers.filter((l) => isSubFilter(activeFilter, l.tags) && (isKLayer(l.id) || isKLayer(l.title) || !kOnly)).map((dLayer) => (
+            <label key={dLayer.id} className="flex items-center gap-2 text-sm border p-2 h-auto bg-takahe-10">
+              <Checkbox checked={dLayer.layer?.visible ?? false} onCheckedChange={() => toggleLayer(dLayer)} className="mb-auto mt-2 border-2 border-takahe bg-white data-[state=checked]:bg-takahe data-[state=checked]:border-takahe text-white" disabled={!dLayer.layer} />
+              <LayerCollapse title={dLayer.title} description={dLayer.description} links={dLayer.links} linkTitles={dLayer.linkTitles} />
+            </label>
+          ))}
 
+        </div>
+        <div ref={mapRef} className="flex-1 relative z-0">
+          <div ref={locateRef} className={'absolute left-2 top-2 bg-nav-blue hover:scale-125'} />
+          <div ref={popupRef} className={`absolute right-0 bottom-0 w-96 bg-white overflow-scroll max-h-full z-10 rounded-sm border-x-3 border-deep-brown shadow-md`} />
+          <div ref={basemapRef} className="" />
+        </div>
       </div>
-      <div ref={mapRef} className="flex-1 relative z-0">
-        <div ref={locateRef} className={'absolute left-2 top-2 bg-nav-blue hover:scale-125'}/>
-        <div ref={popupRef} className={`absolute right-0 bottom-0 w-96 bg-white overflow-scroll max-h-full z-10 rounded-sm border-x-3 border-deep-brown shadow-md`}/>
-        <div ref={basemapRef} className="" />
-      </div>
-    </div>
     </div>
   );
 }
