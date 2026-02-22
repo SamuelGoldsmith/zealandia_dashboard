@@ -6,13 +6,13 @@ import MapView from "@arcgis/core/views/MapView";
 import Locate from "@arcgis/core/widgets/Locate";
 import Popup from "@arcgis/core/widgets/Popup";
 import BasemapToggle from "@arcgis/core/widgets/BasemapToggle";
-import { House, Ellipsis, ChevronLeft, ChevronRight } from "lucide-react";
+import { House, Ellipsis, ChevronLeft, ChevronRight, MapIcon, Loader2 } from "lucide-react";
 import Layer from "@arcgis/core/layers/Layer";
 import { PassThrough } from "stream";
 import { Collapsible } from "radix-ui";
 import { LayerCollapse } from "./collapsible";
 import { Checkbox } from "./ui/checkbox";
-import { isKLayer } from "@/lib/utils";
+import { DataLayer, isKLayer } from "@/lib/utils";
 import { Switch } from "./ui/switch";
 import { Label } from "./ui/label";
 import Legend from "./legend";
@@ -25,16 +25,6 @@ type Props = {
 interface FilterLL {
   name: string;
   next: FilterLL[];
-}
-
-interface DataLayer {
-  id: string;
-  title: string;
-  description: string;
-  links: string[];
-  linkTitles: string[];
-  tags: string[];
-  layer: Layer;
 }
 
 export default function ArcGISMap({ id, layerData, filters }: Props) {
@@ -55,9 +45,10 @@ export default function ArcGISMap({ id, layerData, filters }: Props) {
     if (tags.some(t => t.toLowerCase() === filter.name.toLowerCase())) return true;
     return filter.next.some(f => isSubFilter(f, tags));
   }
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     if (!mapRef.current || !popupRef.current) return;
-
+    setLoading(true)
     const webmap = new WebMap({
       portalItem: { id },
     });
@@ -79,7 +70,6 @@ export default function ArcGISMap({ id, layerData, filters }: Props) {
       ui: { components: [] },
     });
 
-    // map widget add-ons
     const locate = new Locate({
       view: view,
       container: locateRef.current,
@@ -88,10 +78,9 @@ export default function ArcGISMap({ id, layerData, filters }: Props) {
     const toggle = new BasemapToggle({
       view,
       nextBasemap: "hybrid",
-      container: basemapRef.current || undefined,
+      container: basemapRef.current,
     });
 
-    // Wait for map to load layers
     webmap.when(() => {
       const mapLayers = webmap.layers.toArray();
       const unknownLayers: DataLayer[] = [];
@@ -113,7 +102,7 @@ export default function ArcGISMap({ id, layerData, filters }: Props) {
         });
       });
       setLayers([...layerData, ...unknownLayers]);
-
+      setLoading(false)
     });
 
     return () => {
@@ -180,10 +169,10 @@ export default function ArcGISMap({ id, layerData, filters }: Props) {
       <div className="flex h-[73vh] w-screen">
         <div className="w-1/5 h-full bg-white p-2 rounded shadow z-10  overflow-auto">
           <div className="mb-1 flex w-full items-center justify-between">
-            <button className={`mr-auto border border-takahe rounded-l-md p-1 w-full hover:${sidebarFocus !== 'Layers'?'bg-takahe-60/50':''} ${sidebarFocus == 'Layers'? "bg-takahe text-primary": ' bg-takahe-10 text-foreground'}`} onClick={() => setSidebarFocus('Layers')}>Layers</button>
-            <button className={`mr-auto border border-takahe rounded-r-md p-1 w-full hover:${sidebarFocus !== 'Legend'?'bg-takahe-60/50':''} ${sidebarFocus == 'Legend'? "bg-takahe text-primary": ' bg-takahe-10 text-foreground'}`} onClick={() => setSidebarFocus('Legend')}>Legend</button>
+            <button className={`mr-auto border border-takahe rounded-l-md p-1 w-full hover:${sidebarFocus !== 'Layers' ? 'bg-takahe-60/50' : ''} ${sidebarFocus == 'Layers' ? "bg-takahe text-primary" : ' bg-takahe-10 text-foreground'}`} onClick={() => setSidebarFocus('Layers')}>Layers</button>
+            <button className={`mr-auto border border-takahe rounded-r-md p-1 w-full hover:${sidebarFocus !== 'Legend' ? 'bg-takahe-60/50' : ''} ${sidebarFocus == 'Legend' ? "bg-takahe text-primary" : ' bg-takahe-10 text-foreground'}`} onClick={() => setSidebarFocus('Legend')}>Legend</button>
           </div>
-          <hr className="m-1 border rounded-md"/>
+          <hr className="m-1 border rounded-md" />
           <div className={` ${sidebarFocus !== 'Layers' ? 'hidden' : 'visible'} `}>
             {layers.filter((l) => isSubFilter(activeFilter, l.tags) && (isKLayer(l.id) || isKLayer(l.title) || !kOnly)).map((dLayer) => (
               <label key={dLayer.id} className="flex items-center gap-2 text-sm border p-2 h-auto bg-takahe-10">
@@ -193,15 +182,21 @@ export default function ArcGISMap({ id, layerData, filters }: Props) {
             ))}
           </div>
           <div className={`p-3 ${sidebarFocus !== 'Legend' ? 'hidden' : 'visible'} `}>
-            <Legend layers={layers.map((l) => l.layer).filter((l) => l.visible)} />
+            <Legend layers={layers.filter((l) => l.layer.visible)} />
           </div>
         </div>
         <div ref={mapRef} className="flex-1 relative z-0">
           <div ref={locateRef} className={'absolute left-2 top-2 bg-nav-blue hover:scale-125'} />
           <div ref={popupRef} className={`absolute right-0 bottom-0 w-96 bg-white overflow-scroll max-h-full z-10 rounded-sm border-x-3 border-deep-brown shadow-md`} />
-          <div ref={basemapRef} className="" />
+          <div ref={basemapRef} className='absolute items-center left-2 top-13 bg-gray-200 w-[5vh] h-[5vh] hover:scale-125 cursor-pointer z-30' />
+          <MapIcon color="black" className="w-5 h-5 z-50 pointer-events-none absolute items-center left-3.5 top-14" />
         </div>
+        {loading && (
+          <div className="absolute inset-0 top-35 bg-white/70 backdrop-blur-sm z-50 flex items-center justify-center">
+            <Loader2 className="h-20 w-20 animate-spin text-takahe" />
+          </div>
+        )}
       </div>
     </div>
   );
-}
+} 
