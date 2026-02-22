@@ -1,3 +1,4 @@
+import Layer from "@arcgis/core/layers/Layer";
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -20,4 +21,14 @@ export function isKLayer(name: string): boolean{
 
 export function trimKLayer(name: string): string{
   return name.substring(2)
+}
+
+export interface DataLayer {
+  id: string;
+  title: string;
+  description: string;
+  links: string[];
+  linkTitles: string[];
+  tags: string[];
+  layer: Layer;
 }

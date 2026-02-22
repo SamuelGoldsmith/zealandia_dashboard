@@ -6,13 +6,13 @@ import MapView from "@arcgis/core/views/MapView";
 import Locate from "@arcgis/core/widgets/Locate";
 import Popup from "@arcgis/core/widgets/Popup";
 import BasemapToggle from "@arcgis/core/widgets/BasemapToggle";
-import { House, Ellipsis, ChevronLeft, ChevronRight } from "lucide-react";
+import { House, Ellipsis, ChevronLeft, ChevronRight, MapIcon } from "lucide-react";
 import Layer from "@arcgis/core/layers/Layer";
 import { PassThrough } from "stream";
 import { Collapsible } from "radix-ui";
 import { LayerCollapse } from "./collapsible";
 import { Checkbox } from "./ui/checkbox";
-import { isKLayer } from "@/lib/utils";
+import { DataLayer, isKLayer } from "@/lib/utils";
 import { Switch } from "./ui/switch";
 import { Label } from "./ui/label";
 import Legend from "./legend";
@@ -25,16 +25,6 @@ type Props = {
 interface FilterLL {
   name: string;
   next: FilterLL[];
-}
-
-interface DataLayer {
-  id: string;
-  title: string;
-  description: string;
-  links: string[];
-  linkTitles: string[];
-  tags: string[];
-  layer: Layer;
 }
 
 export default function ArcGISMap({ id, layerData, filters }: Props) {
@@ -79,7 +69,6 @@ export default function ArcGISMap({ id, layerData, filters }: Props) {
       ui: { components: [] },
     });
 
-    // map widget add-ons
     const locate = new Locate({
       view: view,
       container: locateRef.current,
@@ -88,10 +77,9 @@ export default function ArcGISMap({ id, layerData, filters }: Props) {
     const toggle = new BasemapToggle({
       view,
       nextBasemap: "hybrid",
-      container: basemapRef.current || undefined,
+      container: basemapRef.current,
     });
 
-    // Wait for map to load layers
     webmap.when(() => {
       const mapLayers = webmap.layers.toArray();
       const unknownLayers: DataLayer[] = [];
@@ -193,15 +181,16 @@ export default function ArcGISMap({ id, layerData, filters }: Props) {
             ))}
           </div>
           <div className={`p-3 ${sidebarFocus !== 'Legend' ? 'hidden' : 'visible'} `}>
-            <Legend layers={layers.map((l) => l.layer).filter((l) => l.visible)} />
+            <Legend layers={layers.filter((l) => l.layer.visible)} />
           </div>
         </div>
         <div ref={mapRef} className="flex-1 relative z-0">
           <div ref={locateRef} className={'absolute left-2 top-2 bg-nav-blue hover:scale-125'} />
           <div ref={popupRef} className={`absolute right-0 bottom-0 w-96 bg-white overflow-scroll max-h-full z-10 rounded-sm border-x-3 border-deep-brown shadow-md`} />
-          <div ref={basemapRef} className="" />
+          <div ref={basemapRef} className='absolute items-center left-2 top-13 bg-gray-200 w-[5vh] h-[5vh] hover:scale-125 cursor-pointer z-30'/>
+            <MapIcon color="black" className="w-5 h-5 z-50 pointer-events-none absolute items-center left-3.5 top-14"/>
         </div>
       </div>
     </div>
   );
-}
+} 

@@ -11,9 +11,9 @@ import PictureMarkerSymbol from "@arcgis/core/symbols/PictureMarkerSymbol";
 import SimpleMarkerSymbol from "@arcgis/core/symbols/SimpleMarkerSymbol";
 import SimpleLineSymbol from "@arcgis/core/symbols/SimpleLineSymbol";
 import SimpleFillSymbol from "@arcgis/core/symbols/SimpleFillSymbol";
-
+import {DataLayer} from "@/lib/utils"
 type Props = {
-  layers: Layer[];
+  layers: DataLayer[];
 };
 
 /**
@@ -25,15 +25,15 @@ export default function Legend({ layers }: Props) {
 
   return (
     <div className="space-y-4 text-sm">
-      {layers.map((layer) => {
-        if (!(layer as any).renderer) return null;
+      {layers.map((dLayer) => {
+        if (!(dLayer.layer as any).renderer) return null;
 
-        const items = getLegendItems(layer);
+        const items = getLegendItems(dLayer.layer);
         if (!items.length) return null;
 
         return (
-          <div key={layer.id}>
-            <h4 className="font-semibold mb-1">{layer.title}</h4>
+          <div key={dLayer.id}>
+            <h4 className="font-semibold mb-1">{dLayer.title}</h4>
             <ul className="space-y-1">
               {items.map((item, i) => (
                 <li key={i} className="flex items-center gap-2">
