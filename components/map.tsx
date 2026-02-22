@@ -15,6 +15,7 @@ import { Checkbox } from "./ui/checkbox";
 import { isKLayer } from "@/lib/utils";
 import { Switch } from "./ui/switch";
 import { Label } from "./ui/label";
+import Legend from "./legend";
 
 type Props = {
   id: string;
@@ -48,6 +49,7 @@ export default function ArcGISMap({ id, layerData, filters }: Props) {
   }
   const [layers, setLayers] = useState<DataLayer[]>([]);
   const [kOnly, setKOnly] = useState<boolean>(true)
+  const [sidebarFocus, setSidebarFocus] = useState<string>('Layers')
   const isSubFilter = (filter: FilterLL, tags: string[]): boolean => {
     if (filter.name === "Home") return true;
     if (tags.some(t => t.toLowerCase() === filter.name.toLowerCase())) return true;
@@ -173,18 +175,26 @@ export default function ArcGISMap({ id, layerData, filters }: Props) {
             {trimClass(f.name)}
           </button>
         ))}
-        <Switch className=" ml-auto mr-3 data-[state=checked]:bg-takahe-60 bg-gray-600" onCheckedChange={toggleKLayers} defaultChecked = {kOnly}/> <Label>Catchment Only</Label>
+        <Switch className=" ml-auto mr-3 data-[state=checked]:bg-takahe-60 bg-gray-600" onCheckedChange={toggleKLayers} defaultChecked={kOnly} /> <Label>Catchment Only</Label>
       </div>
       <div className="flex h-[73vh] w-screen">
         <div className="w-1/5 h-full bg-white p-2 rounded shadow z-10  overflow-auto">
-          <div className="mb-1 flex w-full items-center justify-between"><h2 className="mr-auto">Layers</h2></div>
-          {layers.filter((l) => isSubFilter(activeFilter, l.tags) && (isKLayer(l.id) || isKLayer(l.title) || !kOnly)).map((dLayer) => (
-            <label key={dLayer.id} className="flex items-center gap-2 text-sm border p-2 h-auto bg-takahe-10">
-              <Checkbox checked={dLayer.layer?.visible ?? false} onCheckedChange={() => toggleLayer(dLayer)} className="mb-auto mt-2 border-2 border-takahe bg-white data-[state=checked]:bg-takahe data-[state=checked]:border-takahe text-white" disabled={!dLayer.layer} />
-              <LayerCollapse title={dLayer.title} description={dLayer.description} links={dLayer.links} linkTitles={dLayer.linkTitles} />
-            </label>
-          ))}
-
+          <div className="mb-1 flex w-full items-center justify-between">
+            <button className={`mr-auto border border-takahe rounded-l-md p-1 w-full hover:${sidebarFocus !== 'Layers'?'bg-takahe-60/50':''} ${sidebarFocus == 'Layers'? "bg-takahe text-primary": ' bg-takahe-10 text-foreground'}`} onClick={() => setSidebarFocus('Layers')}>Layers</button>
+            <button className={`mr-auto border border-takahe rounded-r-md p-1 w-full hover:${sidebarFocus !== 'Legend'?'bg-takahe-60/50':''} ${sidebarFocus == 'Legend'? "bg-takahe text-primary": ' bg-takahe-10 text-foreground'}`} onClick={() => setSidebarFocus('Legend')}>Legend</button>
+          </div>
+          <hr className="m-1 border rounded-md"/>
+          <div className={` ${sidebarFocus !== 'Layers' ? 'hidden' : 'visible'} `}>
+            {layers.filter((l) => isSubFilter(activeFilter, l.tags) && (isKLayer(l.id) || isKLayer(l.title) || !kOnly)).map((dLayer) => (
+              <label key={dLayer.id} className="flex items-center gap-2 text-sm border p-2 h-auto bg-takahe-10">
+                <Checkbox checked={dLayer.layer?.visible ?? false} onCheckedChange={() => toggleLayer(dLayer)} className="mb-auto mt-2 border-2 border-takahe bg-white data-[state=checked]:bg-takahe data-[state=checked]:border-takahe text-white" disabled={!dLayer.layer} />
+                <LayerCollapse title={dLayer.title} description={dLayer.description} links={dLayer.links} linkTitles={dLayer.linkTitles} />
+              </label>
+            ))}
+          </div>
+          <div className={`p-3 ${sidebarFocus !== 'Legend' ? 'hidden' : 'visible'} `}>
+            <Legend layers={layers.map((l) => l.layer).filter((l) => l.visible)} />
+          </div>
         </div>
         <div ref={mapRef} className="flex-1 relative z-0">
           <div ref={locateRef} className={'absolute left-2 top-2 bg-nav-blue hover:scale-125'} />
