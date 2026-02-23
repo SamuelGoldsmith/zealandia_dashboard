@@ -41,8 +41,7 @@ export default function Home() {
     return (
         <div className="overflow-hidden h-full">
             <main
-                className="w-full bg-takahe-10 flex-col h-full z-20"
-                style={{backgroundImage: "url('/pattern_tile.png')", backgroundSize: '12% 24%'}}
+                className="w-full bg-background flex-col h-full z-20"
             >
                 <div className="flex flex-wrap lg:flex-nowrap w-full">
                     <TextBox type="browns" className="w-full bg-takahe-10 text-left m-0">
@@ -73,7 +72,7 @@ export default function Home() {
                             a strong cultural and historical connection to Te Kaiwharawhara.
                         </p></div>
                     </TextBox>
-                    <ImageSrcWrapper overlayText="Photo by Scott Langdale" overlayClassName="m-0 p-0"
+                    <ImageSrcWrapper overlayText="Photo by Rob Suisted" overlayClassName="m-0 p-0"
                                      wrapperClassName="w-full lg:w-2/3">
                         <img src="/arial_catchment.avif" alt="Arial view of the catchment"
                              className="h-full w-full object-cover object-center block"/>

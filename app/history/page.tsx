@@ -27,8 +27,10 @@ interface TimelineElement {
     loading?: boolean;
     error?: string;
     images: string[];
+    modernImages: string[];
     dataSource?: string;
     sources: string[];
+    modernSources: string[];
     filter?: string;
 }
 
@@ -41,6 +43,8 @@ interface CsvDataRow {
     filter: string;
     photoLink: string;
     source: string;
+    modernPhotoLink: string;
+    modernSource: string;
     Lat: string;
     Lon: string;
 }
@@ -99,17 +103,33 @@ export default function KMTK() {
             let prevItem: TimelineElement;
 
             results.data.forEach((item: CsvDataRow, index) => {
-                const images = [];
-                const srcs = [];
+                const images: string[] = [];
+                const modernImages: string[] = [];
+                const srcs: string[] = [];
+                const modernSrcs: string[] = [];
 
                 if (prevItem && prevItem.title === item.DisplayTitle) {
                     // if the current item has the same DisplayTitle as the previous item, add its photo
-                    prevItem.images.push(item.photoLink);
-                    prevItem.sources.push(item.source);
+                    if(!(item.photoLink == "")) {
+                        prevItem.images.push(item.photoLink);
+                        prevItem.sources.push(item.source);
+                    }
+
+                    if(!(item.modernPhotoLink == "")) {
+                        prevItem.modernImages.push(item.modernPhotoLink);
+                        prevItem.modernSources.push(item.modernSource);
+                    }
 
                 } else {
-                    images.push(item.photoLink);
-                    srcs.push(item.source);
+                    if(!(item.photoLink == "")) {
+                        images.push(item.photoLink);
+                        srcs.push(item.source);
+                    }
+
+                    if(!(item.modernPhotoLink == "")) {
+                        modernImages.push(item.modernPhotoLink);
+                        modernSrcs.push(item.modernSource);
+                    }
 
                     // create new timeline element
                     const newItem: TimelineElement = {
@@ -119,6 +139,8 @@ export default function KMTK() {
                         description: item.description,
                         dataSource: item.dataSource,
                         images: images,
+                        modernImages: modernImages,
+                        modernSources: modernSrcs,
                         sources: srcs,
                         filter: item.filter
                     }
@@ -193,7 +215,9 @@ export default function KMTK() {
         if (!container) return;
         const target = container.querySelector(`[data-timeline-id="${selectedID}"]`) as HTMLElement | null;
         if (!target) return;
-        target.scrollIntoView({block: 'center', behavior: 'smooth'});
+        setTimeout(() => {
+            target.scrollIntoView({block: 'start', behavior: 'smooth', inline: "nearest"});
+        }, 300);
     }
 
     useEffect(() => {
@@ -202,12 +226,12 @@ export default function KMTK() {
 
     return (
         <div className="flex lg:flex-row flex-col w-full h-screen justify-between">
-            <ScrollArea className="lg:w-[60%] lg:h-[100vh] w-full h-[60%]" id={'timelineScrollArea'}>
+            <ScrollArea className="lg:w-[70%] lg:h-[100vh] w-full h-[70%]" id={'timelineScrollArea'}>
                 <div className={"flex flex-row"}>
                     <TextBox
                         text={"History of Reclamation of Te Kaiwharawhara"}
                         type={"dark"}
-                        className={"text-4xl w-7/10 font-knockout tracking-wide rounded-r-md text-left drop-shadow-md"}
+                        className={"text-4xl w-6/10 font-knockout tracking-wide rounded-md text-left drop-shadow-md m-3"}
                     />
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -246,7 +270,7 @@ export default function KMTK() {
                     items={currentItems}
                 />
             </ScrollArea>
-            <div className={"lg:w-[40vw] lg:h-full w-full h-[40vh] bg-white place-items-center"}>
+            <div className={"lg:w-[30vw] lg:h-full w-full h-[30vh] bg-white place-items-center"}>
                 {/*66be186453d84308b26257021d6fb664*/}
                 <HistoricMap
                     id={"66be186453d84308b26257021d6fb664"}

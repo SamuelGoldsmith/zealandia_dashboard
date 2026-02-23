@@ -17,6 +17,7 @@ import {
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import ImageSrcWrapper from './imageSrcWrapper';
+import {TextBox} from "@/components/text-box";
 
 type TimelineColor = 'primary' | 'secondary' | 'muted' | 'accent' | 'destructive';
 
@@ -120,7 +121,9 @@ interface TimelineItemProps extends Omit<HTMLMotionProps<'li'>, 'ref'> {
     /** Error message */
     error?: string;
     images?: string[];
+    modernImages?: string[];
     sources?: string[];
+    modernSources?: string[];
     dataSource?: string;
 }
 
@@ -150,7 +153,9 @@ const TimelineItem = React.forwardRef<HTMLLIElement, TimelineItemProps>(
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             transition,
             images,
+            modernImages,
             sources,
+            modernSources,
             dataSource,
             ...props
         },
@@ -163,32 +168,49 @@ const TimelineItem = React.forwardRef<HTMLLIElement, TimelineItemProps>(
 
         const selected = (selectedID === id);
 
-        const [api, setApi] = useState<CarouselApi>()
+        const [historicAPI, setHistoricApi] = useState<CarouselApi>()
+        const [modernAPI, setModernApi] = useState<CarouselApi>()
 
         // For showing current image number
-        const [current, setCurrent] = useState(0)
-        const [count, setCount] = useState(0)
+        const [currentHistoric, setCurrentHistoric] = useState(0)
+        const [countHistoric, setCountHistoric] = useState(0)
+        const [currentModern, setCurrentModern] = useState(0)
+        const [countModern, setCountModern] = useState(0)
 
         useEffect(() => {
-            if (!api) {
+            if (!historicAPI) {
                 return
             }
 
             // eslint-disable-next-line react-hooks/set-state-in-effect
-            setCount(api.scrollSnapList().length);
-            setCurrent(api.selectedScrollSnap() + 1);
+            setCountHistoric(historicAPI.scrollSnapList().length);
+            setCurrentHistoric(historicAPI.selectedScrollSnap() + 1);
 
-            api.on("select", () => {
-                setCurrent(api.selectedScrollSnap() + 1)
+            historicAPI.on("select", () => {
+                setCurrentHistoric(historicAPI.selectedScrollSnap() + 1)
             })
 
-        }, [api])
+        }, [historicAPI])
+
+        useEffect(() => {
+            if (!modernAPI) {
+                return
+            }
+
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setCountModern(modernAPI.scrollSnapList().length);
+            setCurrentModern(modernAPI.selectedScrollSnap() + 1);
+
+            modernAPI.on("select", () => {
+                setCurrentModern(modernAPI.selectedScrollSnap() + 1)
+            })
+
+        }, [modernAPI])
 
         const content = (
             <div
                 className="grid grid-cols-[4rem_auto_1fr] gap-2 items-start cursor-pointer"
                 {...(status === 'in-progress' ? { 'aria-current': 'step' } : {})}
-                onClick={() => setSelectedID(id || '0')}
             >
                 {/* Date */}
                 <div className="flex flex-col justify-start pt-1">
@@ -216,8 +238,14 @@ const TimelineItem = React.forwardRef<HTMLLIElement, TimelineItemProps>(
 
                 {/* Content */}
                 <TimelineContent>
-                    <TimelineHeader>
-                        <TimelineTitle className='text-3xl tracking-wide font-normal'>{title}</TimelineTitle>
+                    <TimelineHeader
+                        onClick={() => {
+                            if(selectedID === id) {
+                                setSelectedID('-1')
+                            } else {
+                                setSelectedID(id || '-1')
+                            }}}>
+                        <TimelineTitle className='text-kaka text-3xl tracking-wide font-normal'>{title}</TimelineTitle>
                     </TimelineHeader>
                     <AnimatePresence initial={false}>
                         {selected && (
@@ -235,7 +263,7 @@ const TimelineItem = React.forwardRef<HTMLLIElement, TimelineItemProps>(
                                         {description}
                                     </TimelineDescription>
                                     {dataSource && (
-                                        <p className={'mb-6'}>
+                                        <p className={'mb-3'}>
                                             For more information,
                                             <a href={dataSource}
                                                 className={"text-takahe-60 pl-1 hover:underline"}
@@ -246,41 +274,84 @@ const TimelineItem = React.forwardRef<HTMLLIElement, TimelineItemProps>(
                                         </p>
                                     )}
                                 </div>
-
-                                <Carousel className="w-full h-min flex flex-col  items-stretch" setApi={setApi}
-                                    opts={{ watchDrag: false }}
-                                >
-                                    <div className={"flex flex-row items-center self-center py-0 gap-3"}>
-                                        <CarouselPrevious
-                                            className="self-center"
-                                        />
-                                        <div className="text-muted-foreground py-0 text-center text-sm">
-                                            Image {current} of {count}
+                                <div className={'flex flex-row flex-wrap lg:flex-nowrap w-full h-full'}>
+                                {   /* Carousel for historic images */}
+                                    <Carousel className="w-full h-min flex flex-col items-stretch" setApi={setHistoricApi}
+                                        opts={{ watchDrag: false }}
+                                    >
+                                        <h1 className={"self-center"}>Historic Images</h1>
+                                        <div className={"flex flex-row items-center self-center py-0 gap-3"}>
+                                            <CarouselPrevious
+                                                className="self-center"
+                                            />
+                                            <div className="text-muted-foreground py-0 text-center text-sm">
+                                                Image {currentHistoric} of {countHistoric}
+                                            </div>
+                                            <CarouselNext
+                                                className="self-center"
+                                            />
                                         </div>
-                                        <CarouselNext
-                                            className="self-center"
-                                        />
-                                    </div>
-                                    <CarouselContent className={'h-auto w-full flex items-stretch'}>
-                                        {images && images.map((img, index) => (
-                                            <CarouselItem key={index}
-                                                className="h-min w-full flex items-stretch justify-center">
-                                                <div
-                                                    className=" max-w-1/2 max-h-1/2 place-items-center justify-center flex flex-col">
+                                        <CarouselContent className={'h-auto w-full flex items-stretch'}>
+                                            {images && images.map((img, index) => (
+                                                <CarouselItem key={index}
+                                                    className="h-min w-full flex items-stretch justify-center">
+                                                    <div
+                                                        className={
+                                                            (modernImages && modernImages.length > 0)?
+                                                                cn("w-full h-full place-items-center justify-center flex flex-col"):
+                                                        cn("w-full h-full lg:w-1/2 lg:h-1/2 place-items-center justify-center flex flex-col")
+                                                    }>
 
-                                                    <ImageSrcWrapper overlayText={sources ? sources[index] : ""}>
-                                                        <img
-                                                            src={img}
-                                                            alt={""}
-                                                            className="self-center"
-                                                        />
-                                                    </ImageSrcWrapper>
+                                                        <ImageSrcWrapper overlayText={sources ? sources[index] : ""}>
+                                                            <img
+                                                                src={img}
+                                                                alt={""}
+                                                                className="self-center"
+                                                            />
+                                                        </ImageSrcWrapper>
+                                                    </div>
+                                                </CarouselItem>
+                                            ))}
+                                        </CarouselContent>
+                                    </Carousel>
+                                    {/* Carousel for modern images */}
+                                    {modernImages && modernImages.length > 0 && (
+                                        <Carousel className="w-full h-min flex flex-col items-stretch" setApi={setModernApi}
+                                                  opts={{ watchDrag: false }}
+                                        >
+                                            <h1 className={"self-center"}>Modern Images</h1>
+                                            <div className={"flex flex-row items-center self-center py-0 gap-3"}>
+                                                <CarouselPrevious
+                                                    className="self-center"
+                                                />
+                                                <div className="text-muted-foreground py-0 text-center text-sm">
+                                                    Image {currentModern} of {countModern}
                                                 </div>
-                                            </CarouselItem>
-                                        ))}
-                                    </CarouselContent>
-                                </Carousel>
+                                                <CarouselNext
+                                                    className="self-center"
+                                                />
+                                            </div>
+                                            <CarouselContent className={'h-auto w-full flex items-stretch'}>
+                                                {modernImages && modernImages.map((img, index) => (
+                                                    <CarouselItem key={index}
+                                                                  className="h-min w-full flex items-stretch justify-center">
+                                                        <div
+                                                            className="w-auto h-auto place-items-center justify-center flex flex-col">
 
+                                                            <ImageSrcWrapper overlayText={modernSources ? modernSources[index] : ""}>
+                                                                <img
+                                                                    src={img}
+                                                                    alt={""}
+                                                                    className="self-center"
+                                                                />
+                                                            </ImageSrcWrapper>
+                                                        </div>
+                                                    </CarouselItem>
+                                                ))}
+                                            </CarouselContent>
+                                        </Carousel>
+                                        )}
+                                </div>
                             </motion.div>
                         )}
                     </AnimatePresence>

@@ -11,7 +11,6 @@ function Story({
 }:{ children: React.ReactNode, className?: string } & React.HTMLAttributes<HTMLDivElement>) {
     return (
         <>
-         <hr className={"border-deep-brown border-t w-auto"}/>
         <div className={cn(`w-full h-auto`, className)} {...props}>
            
             {children}

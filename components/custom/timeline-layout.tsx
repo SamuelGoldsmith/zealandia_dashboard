@@ -23,7 +23,9 @@ interface TimelineElement {
     loading?: boolean;
     error?: string;
     images?: string[];
+    modernImages?: string[];
     sources?: string[];
+    modernSources?: string[];
     dataSource?: string;
 }
 
@@ -77,7 +79,9 @@ export const TimelineLayout = ({
                         connectorColor={item.color || connectorColor}
                         showConnector={index !== items.length - 1}
                         images={item.images}
+                        modernImages={item.modernImages}
                         sources={item.sources}
+                        modernSources={item.modernSources}
                         dataSource={item.dataSource}
                     />
                 </motion.div>
