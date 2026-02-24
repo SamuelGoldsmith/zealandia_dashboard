@@ -17,8 +17,6 @@ import {
 } from "@/components/custom/pageDescriptions";
 
 export function PageInfoDialog() {
-    console.log(usePathname())
-
     return (
         <Dialog>
             <DialogTrigger asChild>
