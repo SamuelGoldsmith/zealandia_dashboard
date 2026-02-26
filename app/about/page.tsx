@@ -2,8 +2,10 @@ import { HoverTranslation } from "@/components/hover-translation";
 import { TextBox } from "@/components/text-box";
 import Image from "next/image";
 import { Story } from "@/components/story";
+import { getTextData } from "@/lib/getTextData";
+import { createTranslatedNode } from "@/lib/utils";
 
-export default function Partners() {
+export default async function Partners() {
 
     const strategyGroup = [
         {
@@ -41,21 +43,13 @@ export default function Partners() {
 
     ];
 
-    const keyCollaborators = [
-        {
-            img: '/partners/Trelissik Park Group.png',
-            link: 'https://www.trelissickpark.org.nz/'
-        },
-        {
-            img: '/partners/Coordinate4U.webp',
-            link: 'https://www.coordinate4u.org/'
-        },
-        {
-            img: '/partners/EcoNet.png',
-            link: 'https://econet.nz/'
-        },
+    const [tb1, tb2] = await Promise.all([
+        getTextData("about1"),
+        getTextData("about2"),
+    ]);
 
-    ];
+        const tb1Node = createTranslatedNode(tb1.text, tb1.translate)
+        const tb2Node = createTranslatedNode(tb2.text, tb2.translate)
 
     return (
         <div className={"flex flex-col w-full"}>
@@ -69,18 +63,7 @@ export default function Partners() {
                 className={'whitespace-break-spaces text-left text-xl pb-12 rounded-md'}
                 type="blue"
             >
-
-                Kia Mouriora Te Kaiwharawhara is a collaboration
-                led by Zealandia Te Māra a Tāne in partnership with
-                mana whenua Taranaki Whānui ki Te Upoko o Te Ika.
-                The project receives strategic support from CentrePort,
-                Wellington City Council, Greater Wellington Regional
-                Council, Morphum Environmental Ltd., GHD, and Te Herenga
-                Waka Victoria University of Wellington.
-                <br /><br />
-                Together, Kia Mouriora Te Kaiwharawhara works closely with
-                local businesses, community groups, and other organisations
-                to restore the <HoverTranslation text="mouri" /> of Te Kaiwharawhara whaitua.
+                {tb1Node}
                 <div className="flex flex-row flex-wrap w-full h-1/2 p-6 justify-center self-center">
                     {strategyGroup.map((partner, index) => (
                         <a
@@ -103,7 +86,7 @@ export default function Partners() {
                 </div>
             </TextBox>
             <TextBox
-                text={"The Kia Mouriora Te Kaiwharawhara Sanctuary to Sea Strategy"}
+                text={tb2.title}
                 type={"dark-inline"}
                 className={'text-3xl text-left bg-sea-blue text-primary'}
             />
@@ -111,28 +94,7 @@ export default function Partners() {
                 className={'whitespace-break-spaces text-left text-xl pb-12 rounded-md'}
                 type="blue"
             >
-                Kia Mouriora Te Kaiwharawhara Sanctuary to Sea is a whole-of-catchment multi-stakeholder
-                restoration initiative aimed at restoring freshwater and
-                terrestrial ecosystems in Te Kaiwharawhara, by doing so
-                enhancing Wellington’s natural capital from “Sanctuary to Sea.”
-                <br /><br />
-                Te whaitua o Te Kaiwharawhara is unique in Wellington City: it is the
-                largest stream system and only catchment with an open estuary on
-                Te Whanganui-a-Tara, Wellington harbour. It has many special values — a rich
-                cultural history, many species of native fish, and the unique
-                Zealandia santuary at one of the main headwaters, providing a source of
-                dispersal for unique wildlife.
-                <br /><br />
-                The goal of the Kia Mouriora Te Kaiwharawhara Sanctuary to Sea initiative is the 100-year
-                vision: in 100 years, the catchment is a healthy freshwater
-                and forested ecosystem in an urban setting, which sustains
-                an abundant native biodiversity and enhances the opportunities
-                for Wellingtonians to have a nature-rich future.
-                <br /><br />
-                The project objectives will be met through activites across
-                three interconnected dimensions: Te Awa — The Stream, Te
-                Ngahere — The Forest, and Te Tangata — The People. Te Ao Māori
-                will also provide a foundation to the decision making process.
+{tb2Node}
             </TextBox>
             <div className="w-full m-3 pb-3 flex">
 
