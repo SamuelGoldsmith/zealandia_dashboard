@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Kia Mouriora te Kaiwharawhara",
+  title: "Kia Mouriora Te Kaiwharawhara",
   description: "",
 };
 
